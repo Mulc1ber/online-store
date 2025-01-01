@@ -1,0 +1,42 @@
+{
+    "name": "online-store",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" ",
+        "devf": "\"cd frontend && npm start\" "
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest",
+            "prettier"
+        ],
+        "plugins": [
+            "prettier"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "author": "Demushkin Mikhail <dmo@mail.ru>",
+    "license": "ISC",
+    "dependencies": {
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "prettier": "^3.4.2"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.0"
+    }
+}

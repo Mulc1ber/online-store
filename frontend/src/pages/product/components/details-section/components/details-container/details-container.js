@@ -1,0 +1,125 @@
+import { useEffect, useState } from 'react';
+import { Button, Input } from '../../../../../../components';
+import { useDispatch } from 'react-redux';
+import { updateProductsInCart } from '../../../../../../actions';
+import { addingToCart } from '../../../../../../utils';
+import styled from 'styled-components';
+
+const DetailsContainerContainer = ({ className, productById }) => {
+    const [added, setAdded] = useState(false);
+    const [timerId, setTimerId] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+
+    const dispatch = useDispatch();
+
+    const handleQuantityChange = ({ target }) => {
+        const value = parseInt(target.value);
+        if (value > 0) setQuantity(value);
+    };
+
+    useEffect(() => {
+        if (timerId && !added) {
+            clearTimeout(timerId);
+            console.log('timeout clear');
+        }
+    }, [timerId, added]);
+
+    return (
+        <div className={className}>
+            <div className="product-image">{productById.imageUrl}</div>
+            <div>
+                <div className="product-info-header">
+                    <h1 className="product-info-name">{productById.name}</h1>
+                    <span className="product-info-article">Артикул: {productById.id}</span>
+                </div>
+                <div className="product-info-price">{productById.price} ₽</div>
+                <p className="product-info-description">{productById.description}</p>
+                <div className="product-info-quantity">
+                    <label>Количество:</label>
+                    <Input
+                        type="number"
+                        width={'55px'}
+                        padding={'0.5rem'}
+                        border={'2px solid #ff4081'}
+                        value={quantity}
+                        onChange={handleQuantityChange}
+                        min="1"
+                    />
+                </div>
+                <Button
+                    width={'100%'}
+                    padding={'1rem 2rem'}
+                    background={added ? '#3f51b5' : '#ff4081'}
+                    size={'1.2rem'}
+                    onClick={() =>
+                        addingToCart(
+                            added,
+                            setAdded,
+                            setTimerId,
+                            dispatch,
+                            updateProductsInCart,
+                            productById,
+                            quantity,
+                        )
+                    }
+                >
+                    {added ? 'Добавлено!' : 'Добавить в корзину'}
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+export const DetailsContainer = styled(DetailsContainerContainer)`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    width: 100%;
+    margin-bottom: 1.5rem;
+
+    & .product-image {
+        background: #ff4081;
+        padding: 3rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8rem;
+    }
+
+    & .product-info-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    & .product-info-name {
+        color: #212121;
+    }
+
+    & .product-info-article {
+        font-size: 0.8rem;
+    }
+
+    & .product-info-price {
+        font-size: 2rem;
+        color: #ff4081;
+        font-weight: bold;
+        margin: 1rem 0;
+    }
+
+    & .product-info-description {
+        color: #666;
+        line-height: 1.6;
+        margin: 1.5rem 0;
+    }
+
+    & .product-info-quantity {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+        & input:focus {
+            outline: none;
+        }
+    }
+`;
