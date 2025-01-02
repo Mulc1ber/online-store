@@ -16,15 +16,16 @@ const CardContainer = ({ className, product }) => {
     useEffect(() => {
         if (timerId && !added) {
             clearTimeout(timerId);
-            console.log('timeout clear');
         }
     }, [timerId, added]);
 
     return (
         <div className={className}>
-            <Link to={`/product/${product.id}`} className="product-image">
-                <div>{product.imageUrl}</div>
-            </Link>
+            <Link
+                to={`/product/${product.id}`}
+                className="product-image"
+                style={{ backgroundImage: `url(${product.imageUrl})` }}
+            ></Link>
             <div className="product-info">
                 <p className="product-article">Артикул: {product.id}</p>
                 <Link to={`/product/${product.id}`} className="product-name">
@@ -79,9 +80,14 @@ export const Card = styled(CardContainer)`
         height: 200px;
         padding: 1rem;
         border-radius: 5px;
-        font-size: 4rem;
+        // font-size: 4rem;
         background: #f5f5f5;
         color: #212121;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 
     & .product-info {

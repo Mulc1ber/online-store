@@ -10,7 +10,7 @@ export const sortProducts = (items, currentSort) => {
             return sortedItems.sort((a, b) => a.price - b.price);
         case 'price-desc':
             return sortedItems.sort((a, b) => b.price - a.price);
-        case 'category':
+        case 'category-asc':
             return sortedItems.sort((a, b) => a.category.localeCompare(b.category));
         default:
             return sortedItems;

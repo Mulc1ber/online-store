@@ -1,4 +1,4 @@
-import { addCategory, getCategories, updateCategory } from '../api';
+import { addCategory, updateCategory } from '../api';
 // import { sessions } from '../sessions';
 // import { ROLE } from '../constants';
 
@@ -19,10 +19,11 @@ export const saveCategory = async (newCategorytData) => {
         ? await updateCategory(newCategorytData)
         : await addCategory(newCategorytData);
 
-    const categories = await getCategories('');
+    // const categories = await getCategories('');
 
     return {
         error: null,
-        res: categories,
+        res: true,
+        // res: categories,
     };
 };

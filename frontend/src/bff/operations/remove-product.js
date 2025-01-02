@@ -2,7 +2,7 @@
 // import { sessions } from '../sessions';
 // import { ROLE } from '../constants';
 
-import { deleteProduct, getProducts } from '../api';
+import { deleteProduct } from '../api';
 
 export const removeProduct = async (productId) => {
     // export const removeProduct = async (hash, id) => {
@@ -19,10 +19,8 @@ export const removeProduct = async (productId) => {
 
     await deleteProduct(productId);
 
-    const products = await getProducts('');
-
     return {
         error: null,
-        res: products,
+        res: true,
     };
 };

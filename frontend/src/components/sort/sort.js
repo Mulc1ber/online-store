@@ -9,7 +9,7 @@ const SortContainer = ({ className, onSortChange, currentSort }) => {
                 <option value="name-desc">Названию (Я-А)</option>
                 <option value="price-asc">Цене (по возрастанию)</option>
                 <option value="price-desc">Цене (по убыванию)</option>
-                <option value="category">Категории</option>
+                <option value="category-asc">Категории</option>
             </select>
         </div>
     );

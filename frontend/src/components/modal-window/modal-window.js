@@ -1,57 +1,36 @@
-import { useEffect, useState } from 'react';
 import { Button } from '../button/button';
 import { Input } from '../input/input';
 import { Select } from '../select/select';
-import { useServerRequest } from '../../hooks';
-import { useDispatch } from 'react-redux';
-import { saveCategoryAsync, saveProductAsync } from '../../actions';
 import styled from 'styled-components';
 
 const ModalWindowContainer = ({
     className,
     activeTab,
+    categories,
     editingProduct,
     editingCategory,
     setEditingProduct,
     setEditingCategory,
-    categories,
+    handleSaveProduct,
+    handleSaveCategory,
 }) => {
-    const [selectedCategory, setSelectedCategory] = useState('figures');
-
-    const requestServer = useServerRequest();
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        console.log('activeTab', activeTab);
-
-        if (activeTab === 'tabProducts') {
-            editingProduct.category !== ''
-                ? setSelectedCategory(editingProduct.category)
-                : setEditingProduct((prevProduct) => ({
-                      ...prevProduct,
-                      category: selectedCategory,
-                  }));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeTab]);
-
-    const handleSaveProduct = async (event, editingProduct) => {
-        event.preventDefault();
-        dispatch(saveProductAsync(requestServer, editingProduct));
-        setEditingProduct(null);
-    };
-
     const handleChangeProduct = ({ target }) => {
         const { name, value } = target;
 
-        name === 'category' && setSelectedCategory(value);
-        setEditingProduct({ ...editingProduct, [name]: value });
-    };
-
-    const handleSaveCategory = async (event, editingCategory) => {
-        event.preventDefault();
-        dispatch(saveCategoryAsync(requestServer, editingCategory));
-        setEditingCategory(null);
+        switch (name) {
+            case 'price':
+                setEditingProduct({ ...editingProduct, [name]: Number(value) });
+                break;
+            case 'stock':
+                setEditingProduct({
+                    ...editingProduct,
+                    [name]: Number(value) < 0 ? 0 : Number(value),
+                });
+                break;
+            default:
+                setEditingProduct({ ...editingProduct, [name]: value });
+                break;
+        }
     };
 
     const handleChangeCategory = ({ target }) => {
@@ -104,10 +83,15 @@ const ModalWindowContainer = ({
                             </div>
                             <div className="form-group">
                                 <label>Описание:</label>
-                                <Input
+                                {/* <Input
                                     padding={'0.7rem'}
                                     border={'1px solid #ddd'}
                                     height={'auto'}
+                                    name="description"
+                                    value={editingProduct.description}
+                                    onChange={handleChangeProduct}
+                                /> */}
+                                <textarea
                                     name="description"
                                     value={editingProduct.description}
                                     onChange={handleChangeProduct}
@@ -137,6 +121,7 @@ const ModalWindowContainer = ({
                                     height={'auto'}
                                     type="number"
                                     name="price"
+                                    min="1"
                                     value={editingProduct.price}
                                     onChange={handleChangeProduct}
                                 />
@@ -149,6 +134,7 @@ const ModalWindowContainer = ({
                                     height={'auto'}
                                     type="number"
                                     name="stock"
+                                    min="0"
                                     value={editingProduct.stock}
                                     onChange={handleChangeProduct}
                                 />

@@ -20,17 +20,18 @@ const DetailsContainerContainer = ({ className, productById }) => {
     useEffect(() => {
         if (timerId && !added) {
             clearTimeout(timerId);
-            console.log('timeout clear');
         }
     }, [timerId, added]);
 
     return (
         <div className={className}>
-            <div className="product-image">{productById.imageUrl}</div>
+            <div className="product-image">
+                <img src={productById.imageUrl} alt={productById.name} />
+            </div>
             <div>
                 <div className="product-info-header">
                     <h1 className="product-info-name">{productById.name}</h1>
-                    <span className="product-info-article">Артикул: {productById.id}</span>
+                    <span className="product-info-article">{`Артикул: ${productById.id}`}</span>
                 </div>
                 <div className="product-info-price">{productById.price} ₽</div>
                 <p className="product-info-description">{productById.description}</p>
@@ -79,12 +80,16 @@ export const DetailsContainer = styled(DetailsContainerContainer)`
 
     & .product-image {
         background: #ff4081;
-        padding: 3rem;
-        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 8rem;
+        border-radius: 10px;
+
+        & img {
+            width: 100%;
+            border-radius: 10px;
+            text-align: center;
+        }
     }
 
     & .product-info-header {
@@ -97,6 +102,10 @@ export const DetailsContainer = styled(DetailsContainerContainer)`
     }
 
     & .product-info-article {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        min-width: 25%;
         font-size: 0.8rem;
     }
 

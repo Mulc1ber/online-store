@@ -1,4 +1,5 @@
 export * from './get-products';
+export * from './get-product';
 export * from './get-categories';
 export * from './get-user';
 export * from './get-session';

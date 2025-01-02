@@ -20,10 +20,7 @@ const ButtonContainer = ({
     ...props
 }) => {
     return (
-        <button
-            className={`${className} ${active ? 'active' : ''}`} // ${addToCart ? 'add-to-cart' : ''}
-            {...props}
-        >
+        <button className={`${className} ${active ? 'active' : ''}`} {...props}>
             {children}
         </button>
     );
@@ -40,7 +37,7 @@ export const Button = styled(ButtonContainer)`
     color: ${({ color = 'white' }) => color};
     text-align: ${({ align = 'center' }) => align};
     border-radius: 5px;
-    cursor: pointer;
+    cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
     transition: ${({ transition = '0.3s' }) => transition};
     &:hover {
         background: ${({ hbackground = '#3f51b5' }) => hbackground};

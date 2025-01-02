@@ -1,22 +1,62 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, ModalWindow } from '../../../../components';
+import { useEffect, useState } from 'react';
+import { Button, Loader, ModalWindow } from '../../../../components';
 import { TableProducts } from '../table-products/table-products';
 import { TableCategories } from '../table-categories/table-categories';
-import { selectCategories, selectProducts } from '../../../../selectors';
 import { useServerRequest } from '../../../../hooks';
-import { removeCategoryAsync, removeProductAsync } from '../../../../actions';
 import styled from 'styled-components';
 
 const EditorSectionContainer = ({ className }) => {
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [shouldUpdateProductList, setShouldUpdateProductList] = useState(false);
+    const [shouldUpdateCategoryList, setShouldUpdateCategoryList] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
     const [editingCategory, setEditingCategory] = useState(null);
     const [activeTab, setActiveTab] = useState('tabProducts');
 
     const requestServer = useServerRequest();
-    const products = useSelector(selectProducts);
-    const categories = useSelector(selectCategories);
-    const dispatch = useDispatch();
+
+    useEffect(() => {
+        // TODO раскомментить после реализации ролей
+        // if (!checkAccess([ROLE.ADMIN], userRole)) {
+        //     return;
+        // }
+
+        requestServer('fetchProducts').then((productsRes) => {
+            setProducts(productsRes.res);
+            setIsLoading(false);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [requestServer, shouldUpdateProductList]); // userRole
+
+    useEffect(() => {
+        // TODO раскомментить после реализации ролей
+        // if (!checkAccess([ROLE.ADMIN], userRole)) {
+        //     return;
+        // }
+
+        requestServer('fetchCategories').then((categoriesRes) => {
+            setCategories(categoriesRes.res);
+            setIsLoading(false);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [requestServer, shouldUpdateCategoryList]); // userRole
+
+    // useEffect(() => {
+    //     // TODO раскомментить после реализации ролей
+    //     // if (!checkAccess([ROLE.ADMIN], userRole)) {
+    //     //     return;
+    //     // }
+
+    //     Promise.all([requestServer('fetchProducts'), requestServer('fetchCategories')]).then(
+    //         ([productsRes, categoriesRes]) => {
+    //             setProducts(productsRes.res);
+    //             setCategories(categoriesRes.res);
+    //             setIsLoading(false);
+    //         },
+    //     );
+    // }, [requestServer, shouldUpdateProductList, shouldUpdateCategoryList]); // userRole
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -29,13 +69,13 @@ const EditorSectionContainer = ({ className }) => {
         activeTab === 'tabProducts'
             ? setEditingProduct({
                   name: '',
-                  price: '',
-                  category: '',
+                  price: 1,
+                  category: 'figures',
                   imageUrl: '',
                   description: '',
                   specifications: '',
                   shipping: '',
-                  stock: '',
+                  stock: 1,
               })
             : setEditingCategory({
                   label: '',
@@ -43,12 +83,53 @@ const EditorSectionContainer = ({ className }) => {
               });
     };
 
+    const handleSaveProduct = async (event, editingProduct) => {
+        // TODO раскомментить после реализации ролей
+        // if (!checkAccess([ROLE.ADMIN], userRole)) {
+        //     return;
+        // }
+
+        event.preventDefault();
+        setIsLoading(true);
+        // dispatch(saveProductAsync(requestServer, editingProduct));
+        requestServer('saveProduct', editingProduct).then(() => {
+            setShouldUpdateProductList(!shouldUpdateProductList);
+        });
+        setEditingProduct(null);
+    };
+
+    const handleSaveCategory = async (event, editingCategory) => {
+        // TODO раскомментить после реализации ролей
+        // if (!checkAccess([ROLE.ADMIN], userRole)) {
+        //     return;
+        // }
+
+        event.preventDefault();
+        setIsLoading(true);
+        // dispatch(saveCategoryAsync(requestServer, editingCategory));
+        requestServer('saveCategory', editingCategory).then(() => {
+            setShouldUpdateCategoryList(!shouldUpdateCategoryList);
+        });
+        setEditingCategory(null);
+    };
+
     const handleDelete = async (elementId) => {
+        // TODO раскомментить после реализации ролей
+        // if (!checkAccess([ROLE.ADMIN], userRole)) {
+        //     return;
+        // }
+
+        setIsLoading(true);
+
         if (activeTab === 'tabProducts') {
-            dispatch(removeProductAsync(requestServer, elementId));
+            requestServer('removeProduct', elementId).then(() => {
+                setShouldUpdateProductList(!shouldUpdateProductList);
+            });
         }
         if (activeTab === 'tabCategories') {
-            dispatch(removeCategoryAsync(requestServer, elementId));
+            requestServer('removeCategory', elementId).then(() => {
+                setShouldUpdateCategoryList(!shouldUpdateCategoryList);
+            });
         }
     };
 
@@ -73,38 +154,68 @@ const EditorSectionContainer = ({ className }) => {
                 </Button>
             </div>
 
-            <Button
-                width={activeTab === 'tabProducts' ? '150px' : '185px'}
-                padding={'0.5rem 1rem'}
-                size={'1rem'}
-                onClick={handleCreate}
-                transition={'none'}
-            >
-                {activeTab === 'tabProducts' ? 'Добавить товар' : 'Добавить категорию'}
-            </Button>
-
             {activeTab === 'tabProducts' ? (
-                <TableProducts
-                    products={products}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                />
+                <>
+                    {products.length === 0 ? (
+                        <h2 className="loading-product">Загрузка товаров...</h2>
+                    ) : (
+                        <>
+                            <Button
+                                width={'150px'}
+                                padding={'0.5rem 1rem'}
+                                size={'1rem'}
+                                onClick={handleCreate}
+                                transition={'none'}
+                            >
+                                {'Добавить товар'}
+                            </Button>
+                            <TableProducts
+                                products={products}
+                                handleEdit={handleEdit}
+                                handleDelete={handleDelete}
+                            />
+
+                            <Loader isLoading={isLoading} />
+                        </>
+                    )}
+                </>
             ) : (
-                <TableCategories
-                    categories={categories}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                />
+                <>
+                    {categories.length === 0 ? (
+                        <h2 className="loading-category">Загрузка категорий...</h2>
+                    ) : (
+                        <>
+                            <Button
+                                width={'185px'}
+                                padding={'0.5rem 1rem'}
+                                size={'1rem'}
+                                onClick={handleCreate}
+                                transition={'none'}
+                            >
+                                {'Добавить категорию'}
+                            </Button>
+                            <TableCategories
+                                categories={categories}
+                                handleEdit={handleEdit}
+                                handleDelete={handleDelete}
+                            />
+
+                            <Loader isLoading={isLoading} />
+                        </>
+                    )}
+                </>
             )}
 
             {(editingProduct || editingCategory) && (
                 <ModalWindow
                     activeTab={activeTab}
+                    categories={categories}
                     editingProduct={editingProduct}
                     editingCategory={editingCategory}
                     setEditingProduct={setEditingProduct}
                     setEditingCategory={setEditingCategory}
-                    categories={categories}
+                    handleSaveProduct={handleSaveProduct}
+                    handleSaveCategory={handleSaveCategory}
                 />
             )}
         </div>
@@ -112,6 +223,7 @@ const EditorSectionContainer = ({ className }) => {
 };
 
 export const EditorSection = styled(EditorSectionContainer)`
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -124,5 +236,16 @@ export const EditorSection = styled(EditorSectionContainer)`
     & .tab-buttons {
         display: flex;
         gap: 0.5rem;
+    }
+
+    & .loading-category,
+    & .loading-product {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 380px;
+        text-align: center;
+        font-weight: 500;
+        color: #ff4081;
     }
 `;

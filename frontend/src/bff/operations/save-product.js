@@ -1,4 +1,4 @@
-import { addProduct, getProducts, updateProduct } from '../api';
+import { addProduct, updateProduct } from '../api';
 // import { sessions } from '../sessions';
 // import { ROLE } from '../constants';
 
@@ -17,10 +17,11 @@ export const saveProduct = async (newProductData) => {
 
     newProductData.id ? await updateProduct(newProductData) : await addProduct(newProductData);
 
-    const products = await getProducts('');
+    // const products = await getProducts('');
 
     return {
         error: null,
-        res: products,
+        res: true,
+        // res: products,
     };
 };

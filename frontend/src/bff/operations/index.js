@@ -1,4 +1,5 @@
 export * from './fetch-products';
+export * from './fetch-product';
 export * from './fetch-categories';
 export * from './authorize';
 export * from './register';

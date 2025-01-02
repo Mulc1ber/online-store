@@ -15,3 +15,4 @@ export * from './back-button/back-button';
 export * from './search/search';
 export * from './cart-summary/cart-summary';
 export * from './select/select';
+export * from './loader/loader';

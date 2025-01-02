@@ -23,7 +23,9 @@ const TableProductsContainer = ({ className, products, handleEdit, handleDelete 
                     {products.map((product) => (
                         <tr key={product.id}>
                             <td>{product.id}</td>
-                            <td className="product-image-cell">{product.imageUrl}</td>
+                            <td className="product-image-cell">
+                                <img src={product.imageUrl} alt={product.name} />
+                            </td>
                             <td>{product.name}</td>
                             <td>{product.category}</td>
                             <td className="reduction" title={product.description}>
@@ -36,27 +38,31 @@ const TableProductsContainer = ({ className, products, handleEdit, handleDelete 
                                 {product.shipping}
                             </td>
                             <td>{product.price && `${product.price} ₽`} </td>
-                            <td>{product.stock}</td>
+                            <td>{product.stock} шт</td>
 
-                            <td className="action-buttons">
-                                <Button
-                                    background={'none'}
-                                    size={'1.2rem'}
-                                    padding={'0.5rem'}
-                                    hbackground={'#f5f5f5'}
-                                    onClick={() => handleEdit(product)}
-                                >
-                                    ✏️
-                                </Button>
-                                <Button
-                                    background={'none'}
-                                    size={'1.2rem'}
-                                    padding={'0.5rem'}
-                                    hbackground={'#f5f5f5'}
-                                    onClick={() => handleDelete(product.id)}
-                                >
-                                    🗑️
-                                </Button>
+                            <td>
+                                <div className="action-buttons">
+                                    <Button
+                                        background={'none'}
+                                        size={'1.2rem'}
+                                        padding={'0.5rem'}
+                                        hbackground={'#f5f5f5'}
+                                        onClick={() => handleEdit(product)}
+                                        title={'Редактировать'}
+                                    >
+                                        ✏️
+                                    </Button>
+                                    <Button
+                                        background={'none'}
+                                        size={'1.2rem'}
+                                        padding={'0.5rem'}
+                                        hbackground={'#f5f5f5'}
+                                        onClick={() => handleDelete(product.id)}
+                                        title={'Удалить'}
+                                    >
+                                        🗑️
+                                    </Button>
+                                </div>
                             </td>
                         </tr>
                     ))}
@@ -90,8 +96,12 @@ export const TableProducts = styled(TableProductsContainer)`
     }
 
     & .product-image-cell {
-        font-size: 2rem;
+        // font-size: 2rem;
         text-align: center;
+
+        & img {
+            max-width: 100px;
+        }
     }
 
     & .reduction {
@@ -103,7 +113,7 @@ export const TableProducts = styled(TableProductsContainer)`
 
     & .action-buttons {
         display: flex;
-        gap: 0.5rem;
+        justify-content: space-evenly;
     }
 
     & .edit-button,

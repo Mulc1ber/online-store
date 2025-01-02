@@ -12,6 +12,7 @@ export const useServerRequest = () => {
             const request = [
                 'register',
                 'authorize',
+                'fetchProduct',
                 'fetchProducts',
                 'fetchCategories',
                 'removeProduct',

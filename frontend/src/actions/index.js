@@ -4,6 +4,7 @@ export * from './logout';
 export * from './set-products-data';
 export * from './remove-product-async';
 export * from './reset-products-data';
+export * from './reset-product-data';
 export * from './set-categories-data';
 export * from './remove-category-async';
 export * from './reset-categories-data';

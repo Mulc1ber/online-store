@@ -21,7 +21,9 @@ const CartItemsContainer = ({ className }) => {
         <div className={className}>
             {productsInCart.map((item) => (
                 <div key={item.id} className="cart-item">
-                    <div className="item-image">{item.imageUrl}</div>
+                    <div className="item-image">
+                        <img src={item.imageUrl} alt={item.name} />
+                    </div>
                     <div className="item-details">
                         <h3>{item.name}</h3>
                         <p className="item-price">{item.price} ₽</p>
@@ -81,10 +83,20 @@ export const CartItems = styled(CartItemsContainer)`
     }
 
     & .item-image {
-        font-size: 2.5rem;
-        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // padding: 0.5rem;
         background: white;
         border-radius: 10px;
+        min-width: 100px;
+        max-width: 116px;
+        min-height: 67px;
+
+        & img {
+            max-width: 100px;
+            border-radius: 10px;
+        }
     }
 
     & .item-details h3 {

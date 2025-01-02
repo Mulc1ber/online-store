@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AdditionalInfo, DetailsContainer } from './components';
-import { getTabContent } from '../../../../utils';
 import { BackButton } from '../../../../components';
+import { getTabContent } from '../../utils';
 import styled from 'styled-components';
 
 const DetailsSectionContainer = ({ className, productById }) => {

@@ -34,7 +34,7 @@ const AdditionalInfoContainer = ({ className, activeTab, setActiveTab, getTabCon
                 </Button>
             </div>
             <div className="tab-content">
-                <pre>{getTabContent()}</pre>
+                <p>{getTabContent()}</p>
             </div>
         </div>
     );

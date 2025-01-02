@@ -2,7 +2,7 @@
 // import { sessions } from '../sessions';
 // import { ROLE } from '../constants';
 
-import { deleteCategory, getCategories } from '../api';
+import { deleteCategory } from '../api';
 
 export const removeCategory = async (categoryId) => {
     // export const removeCategory = async (hash, id) => {
@@ -19,10 +19,10 @@ export const removeCategory = async (categoryId) => {
 
     await deleteCategory(categoryId);
 
-    const categories = await getCategories();
+    // const categories = await getCategories();
 
     return {
         error: null,
-        res: categories,
+        res: true,
     };
 };
