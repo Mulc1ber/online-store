@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const HeroContainer = ({ className, children }) => {
@@ -44,3 +45,7 @@ export const Hero = styled(HeroContainer)`
         }
     }
 `;
+
+Hero.propTypes = {
+    children: PropTypes.node.isRequired,
+};

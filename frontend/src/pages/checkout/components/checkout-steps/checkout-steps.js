@@ -108,6 +108,7 @@ const CheckoutStepsContainer = ({ className }) => {
                                         faIcon={'fa-map-marker'}
                                         size={'1.4rem'}
                                         color={'#ff4081'}
+                                        hcolor={'#ff4081'}
                                     ></Icon>
                                     <p>ул. Ленина, д.10, ТЦ "Центр"</p>
                                 </div>

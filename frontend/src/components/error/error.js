@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { PROP_TYPE } from '../../constants';
 
 const StyledError = styled.div`
     display: flex;
@@ -15,3 +16,7 @@ export const Error = ({ error }) =>
             <div>{error}</div>
         </StyledError>
     );
+
+Error.propTypes = {
+    error: PROP_TYPE.ERROR,
+};

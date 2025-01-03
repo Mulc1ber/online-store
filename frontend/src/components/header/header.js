@@ -1,12 +1,12 @@
 import { Logo, Navigation } from './components';
 import styled from 'styled-components';
 
-const HeaderContainer = ({ className, ...props }) => {
+const HeaderContainer = ({ className }) => {
     return (
         <div className={className}>
             <div className="header-container">
                 <Logo />
-                <Navigation {...props} />
+                <Navigation />
             </div>
         </div>
     );

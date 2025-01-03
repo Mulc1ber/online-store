@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
 import { Button } from '../button/button';
 import { Input } from '../input/input';
 import { Select } from '../select/select';
+import { PROP_TYPE } from '../../constants';
 import styled from 'styled-components';
 
 const ModalWindowContainer = ({
@@ -222,10 +224,10 @@ export const ModalWindow = styled(ModalWindowContainer)`
 
     & .edit-modal-content {
         background: white;
-        padding: 2rem;
+        padding: 1.5rem;
         border-radius: 10px;
         width: 100%;
-        max-width: 600px;
+        max-width: 800px;
         & h2 {
             margin-bottom: 1rem;
         }
@@ -236,23 +238,34 @@ export const ModalWindow = styled(ModalWindowContainer)`
 
         & label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
             font-weight: bold;
         }
 
         & textarea {
-            height: 100px;
+            height: 80px;
             width: 100%;
             padding: 0.8rem;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: 0.85rem;
         }
     }
 
     & .modal-actions {
         display: flex;
         gap: 1rem;
-        margin-top: 1.5rem;
+        margin-top: 1rem;
     }
 `;
+
+ModalWindow.propTypes = {
+    activeTab: PropTypes.string.isRequired,
+    categories: PropTypes.arrayOf(PROP_TYPE.CATEGORIES).isRequired,
+    editingProduct: PropTypes.object,
+    editingCategory: PropTypes.object,
+    setEditingProduct: PropTypes.func.isRequired,
+    setEditingCategory: PropTypes.func.isRequired,
+    handleSaveProduct: PropTypes.func.isRequired,
+    handleSaveCategory: PropTypes.func.isRequired,
+};

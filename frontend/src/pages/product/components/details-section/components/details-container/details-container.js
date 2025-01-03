@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Button, Input } from '../../../../../../components';
 import { useDispatch } from 'react-redux';
@@ -5,7 +6,7 @@ import { updateProductsInCart } from '../../../../../../actions';
 import { addingToCart } from '../../../../../../utils';
 import styled from 'styled-components';
 
-const DetailsContainerContainer = ({ className, productById }) => {
+const DetailsContainerContainer = ({ className, product }) => {
     const [added, setAdded] = useState(false);
     const [timerId, setTimerId] = useState(null);
     const [quantity, setQuantity] = useState(1);
@@ -26,15 +27,15 @@ const DetailsContainerContainer = ({ className, productById }) => {
     return (
         <div className={className}>
             <div className="product-image">
-                <img src={productById.imageUrl} alt={productById.name} />
+                <img src={product.imageUrl} alt={product.name} />
             </div>
             <div>
                 <div className="product-info-header">
-                    <h1 className="product-info-name">{productById.name}</h1>
-                    <span className="product-info-article">{`Артикул: ${productById.id}`}</span>
+                    <h1 className="product-info-name">{product.name}</h1>
+                    <span className="product-info-article">{`Артикул: ${product.id}`}</span>
                 </div>
-                <div className="product-info-price">{productById.price} ₽</div>
-                <p className="product-info-description">{productById.description}</p>
+                <div className="product-info-price">{product.price} ₽</div>
+                <p className="product-info-description">{product.description}</p>
                 <div className="product-info-quantity">
                     <label>Количество:</label>
                     <Input
@@ -59,7 +60,7 @@ const DetailsContainerContainer = ({ className, productById }) => {
                             setTimerId,
                             dispatch,
                             updateProductsInCart,
-                            productById,
+                            product,
                             quantity,
                         )
                     }
@@ -132,3 +133,7 @@ export const DetailsContainer = styled(DetailsContainerContainer)`
         }
     }
 `;
+
+DetailsContainer.propTypes = {
+    product: PropTypes.object.isRequired,
+};

@@ -32,12 +32,10 @@ const ProductContainer = ({ className }) => {
         });
     }, [requestServer, params.id]);
 
-    const productById = product.id === Number(params.id) ? product : null;
-
     return (
         <Wrapper>
             <Hero>
-                {productById ? <h1>{productById.name}</h1> : <></>}
+                {product && <h1>{product.name}</h1>}
                 <p>Подробная информация о товаре</p>
             </Hero>
 
@@ -46,8 +44,8 @@ const ProductContainer = ({ className }) => {
                     <h2 className="loading-product">Загрузка...</h2>
                 ) : (
                     <>
-                        {!errorMessage && productById ? (
-                            <DetailsSection productById={productById} />
+                        {!errorMessage && product ? (
+                            <DetailsSection product={product} />
                         ) : (
                             <h2 className="product-not-found">{errorMessage}</h2>
                         )}

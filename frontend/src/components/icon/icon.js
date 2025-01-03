@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const IconContainer = ({ children, className, faIcon, isButton, active, ...props }) => {
@@ -28,3 +29,10 @@ export const Icon = styled(IconContainer)`
         color: white;
     }
 `;
+
+Icon.propTypes = {
+    children: PropTypes.node,
+    faIcon: PropTypes.string.isRequired,
+    isButton: PropTypes.bool,
+    active: PropTypes.string,
+};

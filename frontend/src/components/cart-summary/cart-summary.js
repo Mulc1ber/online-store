@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { calculateTotal } from '../../utils';
 import { Button } from '../button/button';
@@ -61,3 +62,8 @@ export const CartSummary = styled(CartSummaryContainer)`
         font-size: 1.2rem;
     }
 `;
+
+CartSummary.propTypes = {
+    children: PropTypes.node.isRequired,
+    handleOrderCompleted: PropTypes.func.isRequired,
+};

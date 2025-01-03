@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -33,3 +34,7 @@ export const AuthTabs = styled(AuthTabsContainer)`
         border-bottom: 2px solid #ff4081;
     }
 `;
+
+AuthTabs.propTypes = {
+    active: PropTypes.string.isRequired,
+};

@@ -13,8 +13,8 @@ export const PrivateContent = ({ children, access, serverError = null }) => {
     return error ? <Error error={error} /> : children;
 };
 
-// PrivateContent.propTypes = {
-//     children: PropTypes.node.isRequired,
-//     access: PropTypes.arrayOf(PROP_TYPE.ROLE_ID).isRequired,
-//     serverError: PROP_TYPE.ERROR,
-// };
+PrivateContent.propTypes = {
+    children: PropTypes.node.isRequired,
+    access: PropTypes.arrayOf(PROP_TYPE.ROLE_ID).isRequired,
+    serverError: PROP_TYPE.ERROR,
+};

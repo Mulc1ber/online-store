@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const SortContainer = ({ className, onSortChange, currentSort }) => {
@@ -35,3 +36,8 @@ export const Sort = styled(SortContainer)`
         }
     }
 `;
+
+Sort.propTypes = {
+    currentSort: PropTypes.string.isRequired,
+    onSortChange: PropTypes.func.isRequired,
+};

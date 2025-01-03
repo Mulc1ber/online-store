@@ -7,7 +7,12 @@ const BackButtonContainer = ({ className }) => {
     return (
         <div className={className}>
             <div onClick={() => navigate(-1)} className="back-button-link">
-                <Icon faIcon={'fa-chevron-left'} size={'0.9rem'} color={'#ff4081'} />
+                <Icon
+                    faIcon={'fa-chevron-left'}
+                    size={'0.9rem'}
+                    color={'#ff4081'}
+                    isButton={true}
+                />
                 Назад
             </div>
         </div>

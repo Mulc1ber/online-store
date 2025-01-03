@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Button } from '../../../../components';
 import styled from 'styled-components';
 
@@ -132,3 +133,9 @@ export const TableProducts = styled(TableProductsContainer)`
         background: #f5f5f5;
     }
 `;
+
+TableProducts.propTypes = {
+    products: PropTypes.array.isRequired,
+    handleEdit: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const LoaderContainer = ({ className, isLoading }) => {
@@ -48,3 +49,7 @@ export const Loader = styled(LoaderContainer)`
         }
     }
 `;
+
+Loader.propTypes = {
+    isLoading: PropTypes.bool.isRequired,
+};

@@ -1,7 +1,11 @@
+import PropTypes from 'prop-types';
 import { Button } from '../../../../../../components';
+import { getTabContent } from '../../../../utils';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-const AdditionalInfoContainer = ({ className, activeTab, setActiveTab, getTabContent }) => {
+const AdditionalInfoContainer = ({ className, product }) => {
+    const [activeTab, setActiveTab] = useState('description');
     return (
         <div className={className}>
             <div className="product-tabs">
@@ -34,7 +38,7 @@ const AdditionalInfoContainer = ({ className, activeTab, setActiveTab, getTabCon
                 </Button>
             </div>
             <div className="tab-content">
-                <p>{getTabContent()}</p>
+                <p>{getTabContent(activeTab, product)}</p>
             </div>
         </div>
     );
@@ -56,3 +60,7 @@ export const AdditionalInfo = styled(AdditionalInfoContainer)`
         line-height: 1.6;
     }
 `;
+
+AdditionalInfo.propTypes = {
+    product: PropTypes.object.isRequired,
+};

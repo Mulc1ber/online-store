@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -133,3 +134,7 @@ export const Card = styled(CardContainer)`
         margin-bottom: 1rem;
     }
 `;
+
+Card.propTypes = {
+    product: PropTypes.object.isRequired,
+};

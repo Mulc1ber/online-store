@@ -10,19 +10,23 @@ export const PROP_TYPE = {
         name: PropTypes.string.isRequired,
     }),
     ERROR: PropTypes.oneOfType([PropTypes.string, PropTypes.exact(null)]),
-    // TODO поменять на category, product
-
-    // COMMENT: PropTypes.shape({
-    //     id: PropTypes.string.isRequired,
-    //     authorId: PropTypes.string.isRequired,
-    //     content: PropTypes.string.isRequired,
-    //     publishedAt: PropTypes.string.isRequired,
-    // }),
-    // POST: PropTypes.shape({
-    //     id: PropTypes.string.isRequired,
-    //     title: PropTypes.string.isRequired,
-    //     imageUrl: PropTypes.string.isRequired,
-    //     content: PropTypes.string.isRequired,
-    //     publishedAt: PropTypes.string.isRequired,
-    // }),
+    PRODUCTS: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        category: PropTypes.shape({
+            label: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        }).isRequired,
+        imageUrl: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        specifications: PropTypes.string.isRequired,
+        shipping: PropTypes.string.isRequired,
+        stock: PropTypes.number.isRequired,
+    }),
+    CATEGORIES: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+    }),
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const WrapperContainer = ({ className, children }) => {
@@ -11,3 +12,7 @@ export const Wrapper = styled(WrapperContainer)`
     // max-width: 1200px;
     max-width: 1416px;
 `;
+
+Wrapper.propTypes = {
+    children: PropTypes.node.isRequired,
+};

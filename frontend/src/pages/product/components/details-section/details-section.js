@@ -1,21 +1,13 @@
-import { useState } from 'react';
 import { AdditionalInfo, DetailsContainer } from './components';
 import { BackButton } from '../../../../components';
-import { getTabContent } from '../../utils';
 import styled from 'styled-components';
 
-const DetailsSectionContainer = ({ className, productById }) => {
-    const [activeTab, setActiveTab] = useState('description');
-
+const DetailsSectionContainer = ({ className, ...props }) => {
     return (
         <div className={className}>
             <BackButton />
-            <DetailsContainer productById={productById} />
-            <AdditionalInfo
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                getTabContent={() => getTabContent(activeTab, productById)}
-            />
+            <DetailsContainer {...props} />
+            <AdditionalInfo {...props} />
         </div>
     );
 };
