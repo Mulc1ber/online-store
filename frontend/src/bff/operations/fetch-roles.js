@@ -1,8 +1,8 @@
-import { addCategory, updateCategory } from '../api';
-import { ROLE } from '../constants';
+import { getRoles } from '../api';
 import { sessions } from '../sessions';
+import { ROLE } from '../constants';
 
-export const saveCategory = async (hash, newCategorytData) => {
+export const fetchRoles = async (hash) => {
     const accessRoles = [ROLE.ADMIN];
 
     const access = await sessions.access(hash, accessRoles);
@@ -14,12 +14,10 @@ export const saveCategory = async (hash, newCategorytData) => {
         };
     }
 
-    newCategorytData.id
-        ? await updateCategory(newCategorytData)
-        : await addCategory(newCategorytData);
+    const roles = await getRoles();
 
     return {
         error: null,
-        res: true,
+        res: roles,
     };
 };

@@ -2,23 +2,17 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { thunk } from 'redux-thunk';
 import {
     appReducer,
-    counterReducer,
     userReducer,
-    usersReducer,
+    counterReducer,
     productReducer,
-    productsReducer,
-    categoriesReducer,
     productsInCartReducer,
 } from './reducers';
 
 const reducer = combineReducers({
     app: appReducer,
-    counter: counterReducer,
     user: userReducer,
-    users: usersReducer,
+    counter: counterReducer,
     product: productReducer,
-    products: productsReducer,
-    categories: categoriesReducer,
     productsInCart: productsInCartReducer,
 });
 

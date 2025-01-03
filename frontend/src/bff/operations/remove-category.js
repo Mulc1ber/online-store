@@ -1,25 +1,20 @@
-// import { deleteComment, deleteCategory, getComments } from '../api';
-// import { sessions } from '../sessions';
-// import { ROLE } from '../constants';
-
 import { deleteCategory } from '../api';
+import { ROLE } from '../constants';
+import { sessions } from '../sessions';
 
-export const removeCategory = async (categoryId) => {
-    // export const removeCategory = async (hash, id) => {
-    // const accessRoles = [ROLE.ADMIN];
+export const removeCategory = async (hash, categoryId) => {
+    const accessRoles = [ROLE.ADMIN];
 
-    // const access = await sessions.access(hash, accessRoles);
+    const access = await sessions.access(hash, accessRoles);
 
-    // if (!access) {
-    //     return {
-    //         error: 'Доступ запрещен',
-    //         res: null,
-    //     };
-    // }
+    if (!access) {
+        return {
+            error: 'Доступ запрещен',
+            res: null,
+        };
+    }
 
     await deleteCategory(categoryId);
-
-    // const categories = await getCategories();
 
     return {
         error: null,

@@ -15,6 +15,9 @@ import {
     SuccessfulOrder,
 } from './pages';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { useLayoutEffect } from 'react';
+import { setUser } from './actions';
 
 const Page = styled.div`
     width: 100%;
@@ -32,6 +35,23 @@ const AppColumn = styled.div`
 `;
 
 export const App = () => {
+    const dispatch = useDispatch();
+
+    useLayoutEffect(() => {
+        const currentUserDataJSON = sessionStorage.getItem('userData');
+
+        if (!currentUserDataJSON) return;
+
+        const currentUserData = JSON.parse(currentUserDataJSON);
+
+        dispatch(
+            setUser({
+                ...currentUserData,
+                roleId: Number(currentUserData.roleId),
+            }),
+        );
+    }, [dispatch]);
+
     return (
         <AppColumn>
             <Header />

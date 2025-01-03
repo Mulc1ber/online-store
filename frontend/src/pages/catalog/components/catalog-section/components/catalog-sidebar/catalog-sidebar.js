@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 const CatalogSidebarContainer = ({ className }) => {
     const [categories, setCategories] = useState([]);
-    // const [isLoading, setIsLoading] = useState(true);
 
     const params = useParams();
     const requestServer = useServerRequest();
@@ -14,10 +13,8 @@ const CatalogSidebarContainer = ({ className }) => {
     useEffect(() => {
         requestServer('fetchCategories').then((categories) => {
             setCategories(categories.res);
-            // setIsLoading(false);
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [requestServer]); // userRole
+    }, [requestServer]);
 
     return (
         <aside className={className}>

@@ -2,6 +2,7 @@ export * from './get-products';
 export * from './get-product';
 export * from './get-categories';
 export * from './get-user';
+export * from './get-roles';
 export * from './get-session';
 export * from './add-product';
 export * from './add-category';

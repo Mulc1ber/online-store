@@ -27,7 +27,7 @@ const TableProductsContainer = ({ className, products, handleEdit, handleDelete 
                                 <img src={product.imageUrl} alt={product.name} />
                             </td>
                             <td>{product.name}</td>
-                            <td>{product.category}</td>
+                            <td>{product.category?.name}</td>
                             <td className="reduction" title={product.description}>
                                 {product.description}
                             </td>

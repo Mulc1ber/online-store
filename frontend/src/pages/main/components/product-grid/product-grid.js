@@ -17,9 +17,6 @@ const ProductGridContainer = ({ className }) => {
 
     const requestServer = useServerRequest();
 
-    // TODO Реализация сортировки на клиенте.
-    // const filteredAndSortedProducts = sortProducts(products, currentSort);
-
     const startDelayedSearch = useMemo(() => debounce(setShouldSearch, 300), []);
 
     useEffect(() => {
@@ -61,7 +58,6 @@ const ProductGridContainer = ({ className }) => {
                     <>
                         {products.length > 0 ? (
                             <div className="product-grid">
-                                {/* {filteredAndSortedProducts.map((product) => ( // TODO Реализация сортировки на клиенте */}
                                 {products.map((product) => (
                                     <Card key={product.id} product={product} />
                                 ))}

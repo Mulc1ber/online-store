@@ -18,6 +18,13 @@ const ModalWindowContainer = ({
         const { name, value } = target;
 
         switch (name) {
+            case 'category':
+                const categoryName = categories.find(({ label }) => label === value);
+                setEditingProduct({
+                    ...editingProduct,
+                    [name]: { label: value, name: categoryName.name },
+                });
+                break;
             case 'price':
                 setEditingProduct({ ...editingProduct, [name]: Number(value) });
                 break;
@@ -71,7 +78,7 @@ const ModalWindowContainer = ({
                                 <label>Категория:</label>
                                 <Select
                                     name="category"
-                                    value={editingProduct.category}
+                                    value={editingProduct.category?.label}
                                     onChange={handleChangeProduct}
                                 >
                                     {categories.slice(1).map((category) => (
@@ -83,14 +90,6 @@ const ModalWindowContainer = ({
                             </div>
                             <div className="form-group">
                                 <label>Описание:</label>
-                                {/* <Input
-                                    padding={'0.7rem'}
-                                    border={'1px solid #ddd'}
-                                    height={'auto'}
-                                    name="description"
-                                    value={editingProduct.description}
-                                    onChange={handleChangeProduct}
-                                /> */}
                                 <textarea
                                     name="description"
                                     value={editingProduct.description}

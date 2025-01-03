@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button } from '../button/button';
-import { CATEGORIES } from '../../constants/categories';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { Button } from '../button/button';
 import { updateProductsInCart } from '../../actions';
 import { addingToCart } from '../../utils';
+import styled from 'styled-components';
 
 const CardContainer = ({ className, product }) => {
     const [added, setAdded] = useState(false);
@@ -34,7 +33,7 @@ const CardContainer = ({ className, product }) => {
                 <p className="product-description" title={product.description}>
                     {product.description}
                 </p>
-                <p className="product-category">{CATEGORIES[product.category]}</p>
+                <p className="product-category">{product.category?.name}</p>
                 <p className="product-price">{product.price}₽</p>
                 <Button
                     width={'100%'}

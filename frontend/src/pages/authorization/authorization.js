@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { Button, Input } from '../../components';
-import * as yup from 'yup';
-import { Navigate, useMatch } from 'react-router-dom';
-import { AuthTabs } from '../../components/auth/components/auth-tabs/auth-tabs';
-import { AuthFormError } from '../../components/auth/components/auth-form-error/auth-form-error';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { AuthTabs, Button, Input } from '../../components';
 import { server } from '../../bff';
 import { setUser } from '../../actions';
+import { useResetForm } from '../../hooks';
+import { selectUserRole } from '../../selectors';
+import { ROLE } from '../../bff/constants';
+import styled from 'styled-components';
 
 const authFormSchema = yup.object().shape({
     login: yup
@@ -44,11 +45,9 @@ const AuthorizationContainer = ({ className }) => {
 
     const dispatch = useDispatch();
 
-    const isLogin = !!useMatch('/login');
+    const roleId = useSelector(selectUserRole);
 
-    // const roleId = useSelector(selectUserRole);
-
-    // useResetForm(reset);
+    useResetForm(reset);
 
     const onSubmit = ({ login, password }) => {
         server.authorize(login, password).then(({ error, res }) => {
@@ -65,39 +64,9 @@ const AuthorizationContainer = ({ className }) => {
     const formError = errors?.login?.message || errors?.password?.message;
     const errorMessage = formError || serverError;
 
-    // if (roleId !== ROLE.GUEST) {
-    //     return <Navigate to="/" />;
-    // }
-
-    // const [formData, setFormData] = useState({
-    //     email: '',
-    //     password: '',
-    //     confirmPassword: '',
-    // });
-    // const [errors, setErrors] = useState({});
-    // const isLogin = !!useMatch('/login');
-
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData((prev) => ({
-    //         ...prev,
-    //         [name]: value,
-    //     }));
-    //     // Clear error when user starts typing
-    //     if (errors[name]) {
-    //         setErrors((prev) => ({
-    //             ...prev,
-    //             [name]: '',
-    //         }));
-    //     }
-    // };
-
-    // const errorMessage = 'Ошибка! Неверно введены данные';
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     console.log('клик во вкладке', isLogin);
-    // };
+    if (roleId !== ROLE.GUEST) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className={className}>
@@ -123,30 +92,10 @@ const AuthorizationContainer = ({ className }) => {
                             onChange: () => setServerError(null),
                         })}
                     />
-
-                    {/* <Input
-                        padding={'0.8rem'}
-                        height={'auto'}
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="Логин"
-                    /> */}
-                    {/* <Input
-                        padding={'0.8rem'}
-                        height={'auto'}
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        placeholder="Пароль"
-                    /> */}
-
                     <Button type="submit" padding={'1rem'}>
-                        {isLogin ? 'Зарегистрироваться' : 'Войти'}
+                        Войти
                     </Button>
-                    {errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
+                    {errorMessage && <div className="auth-form-error">{errorMessage}</div>}
                 </form>
             </div>
         </div>
@@ -173,5 +122,12 @@ export const Authorization = styled(AuthorizationContainer)`
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+    }
+
+    & .auth-form-error {
+        text-align: center;
+        background-color: #ffd1d1;
+        padding: 10px;
+        color: red;
     }
 `;

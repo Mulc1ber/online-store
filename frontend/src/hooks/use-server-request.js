@@ -8,17 +8,12 @@ export const useServerRequest = () => {
 
     return useCallback(
         (operation, ...params) => {
-            // TODO убрать из request 'removeProduct, removeCategory, saveProduct, saveCategory' после того, как будет реализована session.
             const request = [
                 'register',
                 'authorize',
                 'fetchProduct',
                 'fetchProducts',
                 'fetchCategories',
-                'removeProduct',
-                'removeCategory',
-                'saveProduct',
-                'saveCategory',
             ].includes(operation)
                 ? params
                 : [session, ...params];

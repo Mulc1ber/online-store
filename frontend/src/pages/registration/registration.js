@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import { useMatch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Input } from '../../components';
-import { AuthFormError } from '../../components/auth/components/auth-form-error/auth-form-error';
-import { AuthTabs } from '../../components/auth/components/auth-tabs/auth-tabs';
+import * as yup from 'yup';
+import { AuthTabs, Button, Input } from '../../components';
+import { server } from '../../bff';
+import { setUser } from '../../actions';
+import { useResetForm } from '../../hooks';
+import { selectUserRole } from '../../selectors';
+import { ROLE } from '../../constants';
 import styled from 'styled-components';
 
 const regFormSchema = yup.object().shape({
@@ -32,7 +36,7 @@ const RegistrationContainer = ({ className }) => {
         register,
         reset,
         handleSubmit,
-        // formState: { errors },
+        formState: { errors },
     } = useForm({
         defaultValues: {
             login: '',
@@ -42,36 +46,33 @@ const RegistrationContainer = ({ className }) => {
         resolver: yupResolver(regFormSchema),
     });
 
-    // const [activeTab, setActiveTab] = useState('login');
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        confirmPassword: '',
-    });
-    const [errors, setErrors] = useState({});
-    const isRegistering = !!useMatch('/register');
+    const [serverError, setServerError] = useState(null);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-        // Clear error when user starts typing
-        if (errors[name]) {
-            setErrors((prev) => ({
-                ...prev,
-                [name]: '',
-            }));
-        }
+    const dispatch = useDispatch();
+
+    const roleId = useSelector(selectUserRole);
+
+    useResetForm(reset);
+
+    const onSubmit = ({ login, password }) => {
+        server.register(login, password).then(({ error, res }) => {
+            if (error) {
+                setServerError(`Ошибка запроса: ${error}`);
+                return;
+            }
+
+            dispatch(setUser(res));
+            sessionStorage.setItem('userData', JSON.stringify(res));
+        });
     };
 
-    const errorMessage = 'Ошибка! Неверно введены данные';
+    const formError =
+        errors?.login?.message || errors?.password?.message || errors?.passcheck?.message;
+    const errorMessage = formError || serverError;
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        console.log('клик во вкладке', isRegistering);
-    };
+    if (roleId !== ROLE.GUEST) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className={className}>
@@ -82,39 +83,34 @@ const RegistrationContainer = ({ className }) => {
                     <Input
                         padding={'0.8rem'}
                         height={'auto'}
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="Логин"
+                        type="text"
+                        placeholder="Логин..."
+                        {...register('login', {
+                            onChange: () => setServerError(null),
+                        })}
                     />
-
                     <Input
                         padding={'0.8rem'}
                         height={'auto'}
                         type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        placeholder="Пароль"
+                        placeholder="Пароль..."
+                        {...register('password', {
+                            onChange: () => setServerError(null),
+                        })}
                     />
-
-                    {isRegistering && (
-                        <Input
-                            padding={'0.8rem'}
-                            height={'auto'}
-                            type="password"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            placeholder="Повторите пароль"
-                        />
-                    )}
-
+                    <Input
+                        padding={'0.8rem'}
+                        height={'auto'}
+                        type="password"
+                        placeholder="Повторите Пароль..."
+                        {...register('passcheck', {
+                            onChange: () => setServerError(null),
+                        })}
+                    />
                     <Button type="submit" padding={'1rem'}>
-                        {isRegistering ? 'Зарегистрироваться' : 'Войти'}
+                        Зарегистрироваться
                     </Button>
-                    {errorMessage && <AuthFormError>{errorMessage}</AuthFormError>}
+                    {errorMessage && <div className="auth-form-error">{errorMessage}</div>}
                 </form>
             </div>
         </div>
@@ -141,5 +137,12 @@ export const Registration = styled(RegistrationContainer)`
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+    }
+
+    & .auth-form-error {
+        text-align: center;
+        background-color: #ffd1d1;
+        padding: 10px;
+        color: red;
     }
 `;

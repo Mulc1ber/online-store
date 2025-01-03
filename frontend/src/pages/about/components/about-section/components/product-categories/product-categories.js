@@ -1,10 +1,10 @@
-import { PRODUCT_CATEGORIES } from '../../../../../../constants';
+import { ASSORTMENT } from '../../../../../../constants';
 import styled from 'styled-components';
 
 const ProductCategoriesContainer = ({ className }) => {
     return (
         <div className={className}>
-            {PRODUCT_CATEGORIES.map((category, index) => (
+            {ASSORTMENT.map((category, index) => (
                 <div key={index} className="category-detail">
                     <div className="category-detail-icon">{category.icon}</div>
                     <div>
@@ -18,12 +18,14 @@ const ProductCategoriesContainer = ({ className }) => {
 };
 
 export const ProductCategories = styled(ProductCategoriesContainer)`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 2rem;
     margin: 2rem 0;
 
     & .category-detail {
+        width: 550px;
         background: #f5f5f5;
         padding: 2rem;
         border-radius: 10px;
