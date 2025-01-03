@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { PrivateContent } from '../../components';
+import { ROLE } from '../../constants';
 import styled from 'styled-components';
 
 const SuccessfulOrderContainer = ({ className }) => {
@@ -21,8 +23,8 @@ const SuccessfulOrderContainer = ({ className }) => {
     }, []);
 
     return (
-        <>
-            <div className={className}>
+        <div className={className}>
+            <PrivateContent access={[ROLE.ADMIN, ROLE.BUYER]}>
                 <div className="success-page">
                     <div className="success-icon">✅</div>
                     <h1 className="success-message">Заказ успешно оформлен!</h1>
@@ -54,8 +56,8 @@ const SuccessfulOrderContainer = ({ className }) => {
                     </Link> */}
                     </div>
                 </div>
-            </div>
-        </>
+            </PrivateContent>
+        </div>
     );
 };
 

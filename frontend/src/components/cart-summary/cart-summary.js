@@ -3,11 +3,14 @@ import { useSelector } from 'react-redux';
 import { calculateTotal } from '../../utils';
 import { Button } from '../button/button';
 import styled from 'styled-components';
-import { selectCounter, selectProductsInCart } from '../../selectors';
+import { selectCounter, selectProductsInCart, selectUserRole } from '../../selectors';
+import { ROLE } from '../../constants';
+import { Link } from 'react-router-dom';
 
 const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => {
     const productsInCart = useSelector(selectProductsInCart);
     const productsCount = useSelector(selectCounter);
+    const roleId = useSelector(selectUserRole);
 
     return (
         <div>
@@ -25,15 +28,30 @@ const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => 
                     <span>К оплате</span>
                     <span>{calculateTotal(productsInCart)} ₽</span>
                 </div>
-                <Button
-                    width={'100%'}
-                    padding={'1rem'}
-                    margin={'1rem 0 0'}
-                    size={'1.1rem'}
-                    onClick={handleOrderCompleted}
-                >
-                    {children}
-                </Button>
+                <>
+                    {roleId === ROLE.GUEST ? (
+                        <Link to="/login">
+                            <Button
+                                width={'100%'}
+                                padding={'1rem'}
+                                margin={'1rem 0 0'}
+                                size={'1.1rem'}
+                            >
+                                {children}
+                            </Button>
+                        </Link>
+                    ) : (
+                        <Button
+                            width={'100%'}
+                            padding={'1rem'}
+                            margin={'1rem 0 0'}
+                            size={'1.1rem'}
+                            onClick={handleOrderCompleted}
+                        >
+                            {children}
+                        </Button>
+                    )}
+                </>
             </div>
         </div>
     );
