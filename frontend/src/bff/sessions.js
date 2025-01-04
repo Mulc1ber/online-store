@@ -1,10 +1,11 @@
 import { getSession, addSession, deleteSession } from './api';
+import { transformUser } from './transformers';
 
 export const sessions = {
     create(user) {
         const hash = Math.random().toFixed(50);
 
-        addSession(hash, user);
+        addSession(hash, transformUser(user));
 
         return hash;
     },
@@ -20,6 +21,6 @@ export const sessions = {
     async access(hash, accessRoles) {
         const dbSession = await getSession(hash);
 
-        return !!dbSession?.user && accessRoles.includes(dbSession.user.roleId);
+        return !!dbSession?.user && accessRoles.includes(dbSession.user?.roleId);
     },
 };

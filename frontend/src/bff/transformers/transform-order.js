@@ -1,5 +1,4 @@
 export const fransformOrder = (dbOrder) => ({
-    id: dbOrder.id,
     hash: dbOrder.hash,
     createdAt: dbOrder.created_at,
     status: dbOrder.status,

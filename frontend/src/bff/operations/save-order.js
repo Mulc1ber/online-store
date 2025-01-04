@@ -1,6 +1,7 @@
 import { addOrder, getUser } from '../api';
 import { ROLE } from '../constants';
 import { sessions } from '../sessions';
+import { fransformOrder } from '../transformers';
 import { generateDate } from '../utils';
 
 export const saveOrder = async (hash, totalPrice, orderInfo, userLogin, products) => {
@@ -43,8 +44,10 @@ export const saveOrder = async (hash, totalPrice, orderInfo, userLogin, products
 
     await addOrder(orderResult);
 
+    const sanitizeOrder = fransformOrder(orderResult);
+
     return {
         error: null,
-        res: orderResult,
+        res: sanitizeOrder,
     };
 };

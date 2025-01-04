@@ -19,6 +19,7 @@ const CheckoutContainer = ({ className }) => {
         email: '',
     });
     const [errorMessage, setErrorMessage] = useState(null);
+    const [serverError, setServerError] = useState(null);
 
     const productsInCart = JSON.parse(localStorage.getItem('cart'));
     const requestServer = useServerRequest();
@@ -37,8 +38,13 @@ const CheckoutContainer = ({ className }) => {
 
             dispatch(
                 saveOrderAsync(requestServer, totalPrice, orderInfo, userLogin, productsInCart),
-            ).then((orderHash) => {
-                navigate(`/successful-order/${orderHash}`);
+            ).then((orderData) => {
+                if (orderData.error) {
+                    setServerError('Что-то пошло не так. Попробуйте еще раз позднее.');
+                    return;
+                }
+
+                navigate(`/successful-order/${orderData.res?.hash}`);
             });
             setErrorMessage(null);
         } else {
@@ -57,7 +63,7 @@ const CheckoutContainer = ({ className }) => {
             >
                 <div className={className}>
                     <HeroHeading>Оформление заказа</HeroHeading>
-
+                    {serverError && <div className="server-error">{serverError}</div>}
                     <div className="checkout-container">
                         <CheckoutSteps
                             orderInfo={orderInfo}
@@ -85,5 +91,9 @@ export const Checkout = styled(CheckoutContainer)`
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 2rem;
+    }
+
+    & .server-error {
+        color: red;
     }
 `;
