@@ -26,7 +26,7 @@ export const authorize = async (authLogin, authPassowrd) => {
             id,
             login,
             roleId,
-            session: sessions.create(user),
+            session: sessions.create(user, 'authorize'),
         },
     };
 };

@@ -10,32 +10,23 @@
 - товар: БД (список товаров), store (отображение в браузере)
 - категории: БД (список категориев), store (отображение в браузере)
 
-**- статья: БД (список статей), store (отображение в браузере)**
-
 
 # Таблицы в БД:
 - пользователи - users: id / login / password / registed_at / role_id
 - роль - roles: id / name
-- товары - products: id / name / price / category / image_url / description / specifications / shipping / stock
-- категории - categories: id / name
-
-<!-- - товары - products: id / title / image_url / price / category / quantity -->
-**- комментарии - comments: id / author_id / post_id / content / published_at**
-**- статьи - posts: id / title / image_url / content / published_at**
+- товары - products: id / name / price / image_url / description / specifications / shipping / stock / category: объект: { label / name }
+- категории - categories: id / label / name
+- заказы - orders: id / hash / created_at / status / total_price / user_info: объект: { shipping / payment / username / email } / user: объект: { id / login / password / registeredAt / roleId } / products: массив товаров: [{ id / image_url / name / category / price / quantity }]
 
 
 # Схема состояния на BFF:
-- сессия текущего пользователя: login / password / role
+- сессия текущего пользователя: id / hash / user: объект: { id / login / password / role / registeredAt }
 
 
 # Схема для Redux store (на клиенте):
+- app: wasLogout
 - user: id / login / roleId / session
-- users: массив user: id / login / registeredAt / role
-- products: массив product: id / name / price / category / imageUrl / description / specifications / shipping / stock
+- order: объект: { id / hash / createdAt / status / totalPrice / userInfo: объект: {shipping / payment / username / email} / user: объект: {id / login / password / registeredAt / roleId} / products: массив products }
+- counter: count
 - product: id / name / price / category / imageUrl / description / specifications / shipping / stock
-<!-- - categories: id / name -->
-
-<!-- - products: массив product: id / title / imageUrl / price / category -->
-<!-- - product: id / title / imageUrl / price / category / quantity -->
-**- posts: массив post: id / title / imageUrl / publishedAt / commentsCount**
-**- post: id / title / imageUrl / content / publishedAt / comments: массив comment: id / author / content / publishedAt**
+- productsInCart: массив product: [ id / name / price / category / imageUrl / description / specifications / shipping / stock ]

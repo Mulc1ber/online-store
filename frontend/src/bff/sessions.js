@@ -2,10 +2,11 @@ import { getSession, addSession, deleteSession } from './api';
 import { transformUser } from './transformers';
 
 export const sessions = {
-    create(user) {
+    create(user, action) {
         const hash = Math.random().toFixed(50);
+        const processedUser = action === 'authorize' ? user : transformUser(user);
 
-        addSession(hash, transformUser(user));
+        addSession(hash, processedUser);
 
         return hash;
     },
