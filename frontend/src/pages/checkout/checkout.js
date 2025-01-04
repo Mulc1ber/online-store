@@ -48,7 +48,6 @@ const CheckoutContainer = ({ className }) => {
             });
             setErrorMessage(null);
         } else {
-            console.log('Заполните данные о покупателе');
             setErrorMessage('Заполните обязательные поля');
             return;
         }
