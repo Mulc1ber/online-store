@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { CartContainer, EmptyCart } from './components';
-import styled from 'styled-components';
 import { selectProductsInCart } from '../../../../selectors';
+import styled from 'styled-components';
 
 const CartSectionContainer = ({ className }) => {
     const productsInCart = useSelector(selectProductsInCart);

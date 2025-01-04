@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { Icon } from '../../../../components';
+import styled from 'styled-components';
 
 const CheckoutStepsContainer = ({ className }) => {
     const [selectedDeliveryOption, setSelectedDeliveryOption] = useState('pickup');
@@ -185,10 +185,8 @@ export const CheckoutSteps = styled(CheckoutStepsContainer)`
     & .payment-methods {
         display: flex;
         justify-content: space-between;
+        gap: 1rem;
         width: 93%;
-        // display: grid;
-        // grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        // gap: 20px;
     }
 
     & .delivery-option,

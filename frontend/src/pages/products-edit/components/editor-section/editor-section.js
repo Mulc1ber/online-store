@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useMatch } from 'react-router-dom';
 import { Button, Loader, ModalWindow, PrivateContent } from '../../../../components';
 import { TableProducts } from '../table-products/table-products';
 import { TableCategories } from '../table-categories/table-categories';
@@ -20,6 +21,7 @@ const EditorSectionContainer = ({ className }) => {
     const [editingCategory, setEditingCategory] = useState(null);
     const [activeTab, setActiveTab] = useState('tabProducts');
 
+    const match = useMatch('/products/edit');
     const requestServer = useServerRequest();
     const userRole = useSelector(selectUserRole);
 
@@ -119,7 +121,11 @@ const EditorSectionContainer = ({ className }) => {
 
     return (
         <div className={className}>
-            <PrivateContent access={[ROLE.ADMIN]} serverError={errorMessage}>
+            <PrivateContent
+                access={[ROLE.ADMIN]}
+                serverError={errorMessage}
+                currentPage={match?.pattern.path}
+            >
                 <div className="tab-buttons">
                     <Button
                         active={`${activeTab === 'tabProducts' ? 'active' : ''}`}

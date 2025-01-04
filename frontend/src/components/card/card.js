@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../button/button';
 import { updateProductsInCart } from '../../actions';
 import { addingToCart } from '../../utils';
+import { selectProductsInCart } from '../../selectors';
 import styled from 'styled-components';
 
 const CardContainer = ({ className, product }) => {
@@ -12,12 +13,21 @@ const CardContainer = ({ className, product }) => {
     const [timerId, setTimerId] = useState(null);
 
     const dispatch = useDispatch();
+    const productsInCart = useSelector(selectProductsInCart);
 
     useEffect(() => {
         if (timerId && !added) {
             clearTimeout(timerId);
         }
     }, [timerId, added]);
+
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(productsInCart));
+    }, [productsInCart]);
+
+    const handleAddingToCart = () => {
+        addingToCart(added, setAdded, setTimerId, dispatch, updateProductsInCart, product, 1);
+    };
 
     return (
         <div className={className}>
@@ -40,17 +50,7 @@ const CardContainer = ({ className, product }) => {
                     width={'100%'}
                     background={added ? '#3f51b5' : '#ff4081'}
                     size={'0.8rem'}
-                    onClick={() =>
-                        addingToCart(
-                            added,
-                            setAdded,
-                            setTimerId,
-                            dispatch,
-                            updateProductsInCart,
-                            product,
-                            1,
-                        )
-                    }
+                    onClick={handleAddingToCart}
                 >
                     {added ? 'Добавлено!' : 'В корзину'}
                 </Button>

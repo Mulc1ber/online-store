@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input } from '../../../../../../components';
-import { useDispatch } from 'react-redux';
 import { updateProductsInCart } from '../../../../../../actions';
 import { addingToCart } from '../../../../../../utils';
+import { selectProductsInCart } from '../../../../../../selectors';
 import styled from 'styled-components';
 
 const DetailsContainerContainer = ({ className, product }) => {
@@ -12,17 +13,34 @@ const DetailsContainerContainer = ({ className, product }) => {
     const [quantity, setQuantity] = useState(1);
 
     const dispatch = useDispatch();
-
-    const handleQuantityChange = ({ target }) => {
-        const value = parseInt(target.value);
-        if (value > 0) setQuantity(value);
-    };
+    const productsInCart = useSelector(selectProductsInCart);
 
     useEffect(() => {
         if (timerId && !added) {
             clearTimeout(timerId);
         }
     }, [timerId, added]);
+
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(productsInCart));
+    }, [productsInCart]);
+
+    const handleQuantityChange = ({ target }) => {
+        const value = parseInt(target.value);
+        if (value > 0) setQuantity(value);
+    };
+
+    const handleAddingToCart = () => {
+        addingToCart(
+            added,
+            setAdded,
+            setTimerId,
+            dispatch,
+            updateProductsInCart,
+            product,
+            quantity,
+        );
+    };
 
     return (
         <div className={className}>
@@ -53,17 +71,7 @@ const DetailsContainerContainer = ({ className, product }) => {
                     padding={'1rem 2rem'}
                     background={added ? '#3f51b5' : '#ff4081'}
                     size={'1.2rem'}
-                    onClick={() =>
-                        addingToCart(
-                            added,
-                            setAdded,
-                            setTimerId,
-                            dispatch,
-                            updateProductsInCart,
-                            product,
-                            quantity,
-                        )
-                    }
+                    onClick={handleAddingToCart}
                 >
                     {added ? 'Добавлено!' : 'Добавить в корзину'}
                 </Button>

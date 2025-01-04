@@ -1,31 +1,37 @@
-import { useNavigate } from 'react-router-dom';
-import { CartSummary, HeroHeading, Wrapper } from '../../components';
+import { useMatch, useNavigate } from 'react-router-dom';
+import { CartSummary, HeroHeading, PrivateContent, Wrapper } from '../../components';
 import { CheckoutSteps } from './components';
+import { ROLE } from '../../constants';
 import styled from 'styled-components';
-import { RESET_PRODUCTS_IN_CART } from '../../actions';
-import { useDispatch } from 'react-redux';
 
 const CheckoutContainer = ({ className }) => {
+    const productsInCart = JSON.parse(localStorage.getItem('cart'));
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const match = useMatch('/checkout');
 
     const handleOrderCompleted = () => {
         // TODO создать запрос на запись в БД данных о заказе.
-        navigate('/successful-order');
-        dispatch(RESET_PRODUCTS_IN_CART);
+        const orderHash = Math.random().toFixed(10).slice(2);
+        navigate(`/successful-order/${orderHash}`);
     };
 
     return (
         <Wrapper>
-            <div className={className}>
-                <HeroHeading>Оформление заказа</HeroHeading>
-                <div className="checkout-container">
-                    <CheckoutSteps />
-                    <CartSummary handleOrderCompleted={handleOrderCompleted}>
-                        Подтвердить заказ
-                    </CartSummary>
+            <PrivateContent
+                access={[ROLE.ADMIN, ROLE.BUYER]}
+                hasProductsInCart={productsInCart}
+                currentPage={match?.pattern.path}
+            >
+                <div className={className}>
+                    <HeroHeading>Оформление заказа</HeroHeading>
+                    <div className="checkout-container">
+                        <CheckoutSteps />
+                        <CartSummary handleOrderCompleted={handleOrderCompleted}>
+                            Подтвердить заказ
+                        </CartSummary>
+                    </div>
                 </div>
-            </div>
+            </PrivateContent>
         </Wrapper>
     );
 };

@@ -333,7 +333,13 @@
   "orders": [
     {
       "id": 1,
-      "user_id": 1,
+      "user": {
+        "id": "001",
+        "login": "mike",
+        "password": "qwe123",
+        "registeredAt": "2056-11-29 13:28",
+        "roleId": 0
+      },
       "user_info": {
         "name": "Ivan",
         "phone": "89123456789",

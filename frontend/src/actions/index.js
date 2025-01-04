@@ -3,6 +3,7 @@ export * from './set-user';
 export * from './logout';
 export * from './update-counter';
 export * from './update-quantity-product';
+export * from './set-products-in-cart';
 export * from './update-products-in-cart';
 export * from './delete-products-in-cart';
 export * from './reset-products-in-cart';

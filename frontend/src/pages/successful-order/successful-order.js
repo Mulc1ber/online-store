@@ -1,30 +1,46 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useMatch } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { PrivateContent } from '../../components';
 import { ROLE } from '../../constants';
+import { RESET_PRODUCTS_IN_CART } from '../../actions';
 import styled from 'styled-components';
 
 const SuccessfulOrderContainer = ({ className }) => {
     const [orderDetails, setOrderDetails] = useState({});
+    const [tempListProducts, setTempListProducts] = useState([]);
+
+    const dispatch = useDispatch();
+    const match = useMatch('/successful-order/:hash');
 
     useEffect(() => {
+        setTempListProducts(JSON.parse(localStorage.getItem('cart')));
+        console.log('tempListProducts', tempListProducts);
+
         // TODO Вытягивать данные о заказе из Redux (БД).
         // TODO дополняться должно из checkout-steps где выбираем способы и указываем данные покупателя. Из Redux
-        setOrderDetails((prevOrderDetails) => ({
-            ...prevOrderDetails,
-            address: 'ул. Ленина, д.10, ТЦ "Центр',
-            id: Date.now(),
-            created_at: new Date().toLocaleDateString(),
-            status: 'processing',
-            payment: 'card',
-            shipping: 'pickup',
-            products: [],
-        }));
-    }, []);
+        // setOrderDetails((prevOrderDetails) => ({
+        //     ...prevOrderDetails,
+        //     address: 'ул. Ленина, д.10, ТЦ "Центр',
+        //     id: Date.now(),
+        //     created_at: new Date().toLocaleDateString(),
+        //     status: 'processing',
+        //     payment: 'card',
+        //     shipping: 'pickup',
+        //     products: [],
+        // }));
+
+        dispatch(RESET_PRODUCTS_IN_CART);
+        localStorage.removeItem('cart');
+    }, [dispatch]);
 
     return (
         <div className={className}>
-            <PrivateContent access={[ROLE.ADMIN, ROLE.BUYER]}>
+            <PrivateContent
+                access={[ROLE.ADMIN, ROLE.BUYER]}
+                hasProductsInCart={tempListProducts}
+                currentPage={match?.pattern.path}
+            >
                 <div className="success-page">
                     <div className="success-icon">✅</div>
                     <h1 className="success-message">Заказ успешно оформлен!</h1>

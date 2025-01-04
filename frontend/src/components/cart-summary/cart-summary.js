@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { calculateTotal } from '../../utils';
 import { Button } from '../button/button';
-import styled from 'styled-components';
 import { selectCounter, selectProductsInCart, selectUserRole } from '../../selectors';
 import { ROLE } from '../../constants';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => {
     const productsInCart = useSelector(selectProductsInCart);

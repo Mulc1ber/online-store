@@ -17,7 +17,7 @@ import {
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useLayoutEffect } from 'react';
-import { setUser } from './actions';
+import { setProductsInCart, setUser, updateProductsInCart } from './actions';
 
 const Page = styled.div`
     width: 100%;
@@ -52,6 +52,14 @@ export const App = () => {
         );
     }, [dispatch]);
 
+    useLayoutEffect(() => {
+        const productsInCartJSON = localStorage.getItem('cart');
+
+        if (!productsInCartJSON) return;
+
+        dispatch(setProductsInCart(JSON.parse(productsInCartJSON)));
+    }, [dispatch]);
+
     return (
         <AppColumn>
             <Header />
@@ -68,7 +76,7 @@ export const App = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />}></Route>
-                    <Route path="/successful-order" element={<SuccessfulOrder />}></Route>
+                    <Route path="/successful-order/:hash" element={<SuccessfulOrder />}></Route>
 
                     <Route path="*" element={<Error error={ERROR.PAGE_NOT_EXIST} />} />
                 </Routes>

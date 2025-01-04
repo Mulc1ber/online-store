@@ -6,6 +6,11 @@ const initialProductsInCartState = {
 
 export const productsInCartReducer = (state = initialProductsInCartState, action) => {
     switch (action.type) {
+        case ACTION_TYPE.SET_PRODUCTS_IN_CART:
+            return {
+                ...state,
+                productsInCart: action.payload,
+            };
         case ACTION_TYPE.UPDATE_PRODUCTS_IN_CART:
             const updatedProducts = state.productsInCart.map((item) => {
                 if (item.id === action.payload.product.id) {
