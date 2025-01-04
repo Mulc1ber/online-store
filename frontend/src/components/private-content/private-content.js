@@ -10,6 +10,7 @@ export const PrivateContent = ({
     access,
     serverError = null,
     hasProductsInCart = null,
+    orderProducts = null,
     currentPage,
 }) => {
     const userRole = useSelector(selectUserRole);
@@ -29,8 +30,7 @@ export const PrivateContent = ({
 
         case PRIVATE_PATH.ORDER:
             accessError = checkAccess(access, userRole) ? null : ERROR.ACCESS_DENIED;
-            cartError =
-                hasProductsInCart && hasProductsInCart?.length > 0 ? null : ERROR.ORDER_NOT_FOUND;
+            cartError = orderProducts && orderProducts?.length > 0 ? null : ERROR.ORDER_NOT_FOUND;
             break;
 
         default:
@@ -47,5 +47,6 @@ PrivateContent.propTypes = {
     access: PropTypes.arrayOf(PROP_TYPE.ROLE_ID).isRequired,
     serverError: PROP_TYPE.ERROR,
     hasProductsInCart: PropTypes.arrayOf(PROP_TYPE.PRODUCTS),
+    orderProducts: PropTypes.arrayOf(PROP_TYPE.ORDER_PRODUCTS),
     currentPage: PropTypes.string.isRequired,
 };

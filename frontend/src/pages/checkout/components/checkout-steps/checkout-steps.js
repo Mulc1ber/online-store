@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import { Icon } from '../../../../components';
+import PropTypes from 'prop-types';
+import { Icon, Input } from '../../../../components';
+import { PROP_TYPE } from '../../../../constants';
 import styled from 'styled-components';
 
-const CheckoutStepsContainer = ({ className }) => {
-    const [selectedDeliveryOption, setSelectedDeliveryOption] = useState('pickup');
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('card');
-
+const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessage }) => {
     const handleDeliveryOption = (option) => {
-        setSelectedDeliveryOption(option);
+        setOrderInfo({ ...orderInfo, shipping: option });
     };
 
     const handlePaymentMethod = (option) => {
-        setSelectedPaymentMethod(option);
+        setOrderInfo({ ...orderInfo, payment: option });
     };
 
     return (
@@ -23,28 +21,39 @@ const CheckoutStepsContainer = ({ className }) => {
                         <label>
                             Ваше имя <span>*</span>
                         </label>
-                        <input type="text" placeholder="Введите имя" />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            Ваш телефон <span>*</span>
-                        </label>
-                        <input type="tel" placeholder="+7 ( ___ ) ___ - __ - __" />
+                        <Input
+                            height={'auto'}
+                            type="text"
+                            placeholder="Введите имя"
+                            value={orderInfo.username}
+                            onChange={({ target }) =>
+                                setOrderInfo({ ...orderInfo, username: target.value })
+                            }
+                        />
                     </div>
                     <div className="form-group">
                         <label>
                             Ваш email <span>*</span>
                         </label>
-                        <input type="email" placeholder="Введите email" />
+                        <Input
+                            height={'auto'}
+                            type="email"
+                            placeholder="Введите email"
+                            value={orderInfo.email}
+                            onChange={({ target }) =>
+                                setOrderInfo({ ...orderInfo, email: target.value })
+                            }
+                        />
                     </div>
                 </div>
+                <div className="error-message">{errorMessage}</div>
             </div>
 
             <div className="step">
                 <h2 className="step-title">Шаг 2: Выберите способ оплаты</h2>
-                <form className="payment-methods">
+                <div className="payment-methods">
                     <div
-                        className={`payment-method ${selectedPaymentMethod === 'card' ? 'active' : ''}`}
+                        className={`payment-method ${orderInfo.payment === 'card' ? 'active' : ''}`}
                     >
                         <label htmlFor="card" className="payment-content">
                             <input
@@ -53,7 +62,7 @@ const CheckoutStepsContainer = ({ className }) => {
                                 id="card"
                                 value="card"
                                 onChange={() => handlePaymentMethod('card')}
-                                checked={selectedPaymentMethod === 'card'}
+                                checked={orderInfo.payment === 'card'}
                             />
                             <label></label>
                             <div>
@@ -63,7 +72,7 @@ const CheckoutStepsContainer = ({ className }) => {
                         </label>
                     </div>
                     <div
-                        className={`payment-method ${selectedPaymentMethod === 'cash' ? 'active' : ''}`}
+                        className={`payment-method ${orderInfo.payment === 'cash' ? 'active' : ''}`}
                     >
                         <label htmlFor="cash" className="payment-content">
                             <input
@@ -72,7 +81,7 @@ const CheckoutStepsContainer = ({ className }) => {
                                 id="cash"
                                 value="cash"
                                 onChange={() => handlePaymentMethod('cash')}
-                                checked={selectedPaymentMethod === 'cash'}
+                                checked={orderInfo.payment === 'cash'}
                             />
                             <label></label>
                             <div>
@@ -81,14 +90,14 @@ const CheckoutStepsContainer = ({ className }) => {
                             </div>
                         </label>
                     </div>
-                </form>
+                </div>
             </div>
 
             <div className="step">
                 <h2 className="step-title">Шаг 3: Выберите способ доставки</h2>
-                <form className="delivery-options">
+                <div className="delivery-options">
                     <div
-                        className={`delivery-option ${selectedDeliveryOption === 'pickup' ? 'active' : ''}`}
+                        className={`delivery-option ${orderInfo.shipping === 'pickup' ? 'active' : ''}`}
                     >
                         <label htmlFor="pickup" className="delivery-content">
                             <input
@@ -97,7 +106,7 @@ const CheckoutStepsContainer = ({ className }) => {
                                 id="pickup"
                                 value="pickup"
                                 onChange={() => handleDeliveryOption('pickup')}
-                                checked={selectedDeliveryOption === 'pickup'}
+                                checked={orderInfo.shipping === 'pickup'}
                             />
                             <label></label>
                             <div>
@@ -116,7 +125,7 @@ const CheckoutStepsContainer = ({ className }) => {
                         </label>
                     </div>
                     <div
-                        className={`delivery-option ${selectedDeliveryOption === 'courier' ? 'active' : ''}`}
+                        className={`delivery-option ${orderInfo.shipping === 'courier' ? 'active' : ''}`}
                     >
                         <label htmlFor="courier" className="delivery-content">
                             <input
@@ -125,7 +134,7 @@ const CheckoutStepsContainer = ({ className }) => {
                                 id="courier"
                                 value="courier"
                                 onChange={() => handleDeliveryOption('courier')}
-                                checked={selectedDeliveryOption === 'courier'}
+                                checked={orderInfo.shipping === 'courier'}
                             />
                             <label></label>
                             <div>
@@ -134,7 +143,7 @@ const CheckoutStepsContainer = ({ className }) => {
                             </div>
                         </label>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
@@ -152,11 +161,15 @@ export const CheckoutSteps = styled(CheckoutStepsContainer)`
     }
 
     & .form-container {
-        width: 50%;
+        display: flex;
+        justify-content: space-around;
+        gap: 2rem;
+        width: 100%;
     }
 
     & .form-group {
-        margin-bottom: 20px;
+        width: 100%;
+        margin-bottom: 1rem;
 
         & label {
             display: block;
@@ -177,8 +190,15 @@ export const CheckoutSteps = styled(CheckoutStepsContainer)`
         }
 
         & span {
+            font-size: 1rem;
             color: #ff4081;
         }
+    }
+
+    & .error-message {
+        text-align: center;
+        color: red;
+        font-size: 0.9rem;
     }
 
     & .delivery-options,
@@ -211,7 +231,11 @@ export const CheckoutSteps = styled(CheckoutStepsContainer)`
         display: flex;
         gap: 1rem;
         width: 100%;
+        height: 100%;
         padding: 15px;
+        &:hover {
+            cursor: pointer;
+        }
 
         & h3 {
             margin: 0 0 0.5rem 0;
@@ -258,3 +282,9 @@ export const CheckoutSteps = styled(CheckoutStepsContainer)`
         }
     }
 `;
+
+CheckoutSteps.propTypes = {
+    orderInfo: PropTypes.object.isRequired,
+    setOrderInfo: PropTypes.func.isRequired,
+    errorMessage: PROP_TYPE.ERROR,
+};

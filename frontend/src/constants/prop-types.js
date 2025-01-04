@@ -29,4 +29,15 @@ export const PROP_TYPE = {
         label: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
     }),
+    ORDER_PRODUCTS: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        category: PropTypes.shape({
+            label: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        }).isRequired,
+        imageUrl: PropTypes.string.isRequired,
+        quantity: PropTypes.number.isRequired,
+    }),
 };

@@ -80,7 +80,6 @@ export const Card = styled(CardContainer)`
         height: 200px;
         padding: 1rem;
         border-radius: 5px;
-        // font-size: 4rem;
         background: #f5f5f5;
         color: #212121;
         border-bottom-left-radius: 0;

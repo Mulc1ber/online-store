@@ -25,7 +25,6 @@ const NavigationContainer = ({ className }) => {
 
     useEffect(() => {
         dispatch(updateCounter(productsInCart.reduce((total, item) => total + item.quantity, 0)));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productsInCart, dispatch]);
 
     const onLogout = (session) => {

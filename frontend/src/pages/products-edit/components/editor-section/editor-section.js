@@ -43,7 +43,7 @@ const EditorSectionContainer = ({ className }) => {
             setCategories(categoriesRes.res);
             setIsLoading(false);
         });
-    }, [requestServer, shouldUpdateProductList, shouldUpdateCategoryList, userRole]); // userRole
+    }, [requestServer, shouldUpdateProductList, shouldUpdateCategoryList, userRole]);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);

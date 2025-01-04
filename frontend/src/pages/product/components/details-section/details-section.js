@@ -15,7 +15,6 @@ const DetailsSectionContainer = ({ className, ...props }) => {
 export const DetailsSection = styled(DetailsSectionContainer)`
     display: flex;
     flex-direction: column;
-    // gap: 1.5rem;
     align-items: flex-start;
     background: white;
     border-radius: 10px;

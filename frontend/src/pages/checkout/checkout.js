@@ -1,18 +1,51 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { CartSummary, HeroHeading, PrivateContent, Wrapper } from '../../components';
 import { CheckoutSteps } from './components';
 import { ROLE } from '../../constants';
+import { useServerRequest } from '../../hooks';
+import { checkAccess } from '../../utils';
+import { selectUserRole } from '../../selectors';
+import { PATTERN_EMAIL } from './utils/check-email';
+import { saveOrderAsync } from '../../actions';
 import styled from 'styled-components';
 
 const CheckoutContainer = ({ className }) => {
+    const [orderInfo, setOrderInfo] = useState({
+        shipping: 'pickup',
+        payment: 'card',
+        username: '',
+        email: '',
+    });
+    const [errorMessage, setErrorMessage] = useState(null);
+
     const productsInCart = JSON.parse(localStorage.getItem('cart'));
+    const requestServer = useServerRequest();
+    const userRole = useSelector(selectUserRole);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const match = useMatch('/checkout');
 
-    const handleOrderCompleted = () => {
-        // TODO создать запрос на запись в БД данных о заказе.
-        const orderHash = Math.random().toFixed(10).slice(2);
-        navigate(`/successful-order/${orderHash}`);
+    const handleOrderCompleted = (totalPrice) => {
+        if (!checkAccess([ROLE.ADMIN, ROLE.BUYER], userRole)) {
+            return;
+        }
+
+        if (orderInfo.username !== '' && PATTERN_EMAIL.test(orderInfo.email)) {
+            const { login: userLogin } = JSON.parse(sessionStorage.getItem('userData'));
+
+            dispatch(
+                saveOrderAsync(requestServer, totalPrice, orderInfo, userLogin, productsInCart),
+            ).then((orderHash) => {
+                navigate(`/successful-order/${orderHash}`);
+            });
+            setErrorMessage(null);
+        } else {
+            console.log('Заполните данные о покупателе');
+            setErrorMessage('Заполните обязательные поля');
+            return;
+        }
     };
 
     return (
@@ -24,8 +57,13 @@ const CheckoutContainer = ({ className }) => {
             >
                 <div className={className}>
                     <HeroHeading>Оформление заказа</HeroHeading>
+
                     <div className="checkout-container">
-                        <CheckoutSteps />
+                        <CheckoutSteps
+                            orderInfo={orderInfo}
+                            setOrderInfo={setOrderInfo}
+                            errorMessage={errorMessage}
+                        />
                         <CartSummary handleOrderCompleted={handleOrderCompleted}>
                             Подтвердить заказ
                         </CartSummary>

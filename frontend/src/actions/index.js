@@ -8,3 +8,5 @@ export * from './update-products-in-cart';
 export * from './delete-products-in-cart';
 export * from './reset-products-in-cart';
 export * from './reset-product-data';
+export * from './set-order-data';
+export * from './save-order-async';

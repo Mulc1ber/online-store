@@ -86,7 +86,6 @@ export const CartItems = styled(CartItemsContainer)`
         display: flex;
         align-items: center;
         justify-content: center;
-        // padding: 0.5rem;
         background: white;
         border-radius: 10px;
         min-width: 100px;
@@ -120,21 +119,6 @@ export const CartItems = styled(CartItemsContainer)`
             color: white;
             margin: 0 0.5rem;
         }
-
-        // & button {
-        //     background: #ff4081;
-        //     color: white;
-        //     border: none;
-        //     width: 30px;
-        //     height: 30px;
-        //     border-radius: 5px;
-        //     cursor: pointer;
-        //     transition: background 0.3s;
-
-        //     &:hover {
-        //         background: #3f51b5;
-        //     }
-        // }
     }
 
     & .item-total {

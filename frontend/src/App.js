@@ -17,7 +17,7 @@ import {
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useLayoutEffect } from 'react';
-import { setProductsInCart, setUser, updateProductsInCart } from './actions';
+import { setProductsInCart, setUser } from './actions';
 
 const Page = styled.div`
     width: 100%;
@@ -30,8 +30,6 @@ const AppColumn = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    // width: 1416px;
-    // margin: 0 auto;
 `;
 
 export const App = () => {

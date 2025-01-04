@@ -1,15 +1,15 @@
 import { ACTION_TYPE } from '../actions';
 
 const initialProductState = {
-    id: '',
-    name: '',
-    price: '',
-    category: '',
-    imageUrl: '',
-    description: '',
-    specifications: '',
-    shipping: '',
-    stock: '',
+    id: null,
+    name: null,
+    price: null,
+    category: null,
+    imageUrl: null,
+    description: null,
+    specifications: null,
+    shipping: null,
+    stock: null,
 };
 
 export const productReducer = (state = initialProductState, action) => {

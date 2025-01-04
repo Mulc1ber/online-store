@@ -97,7 +97,6 @@ export const TableProducts = styled(TableProductsContainer)`
     }
 
     & .product-image-cell {
-        // font-size: 2rem;
         text-align: center;
 
         & img {

@@ -8,4 +8,5 @@ export * from './remove-product';
 export * from './remove-category';
 export * from './save-product';
 export * from './save-category';
+export * from './save-order';
 export * from './logout';

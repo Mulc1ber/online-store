@@ -15,7 +15,6 @@ const CatalogProductsGridContainer = ({ className }) => {
         requestServer('fetchProducts').then((products) => {
             setProducts(products.res);
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [requestServer]);
 
     return (

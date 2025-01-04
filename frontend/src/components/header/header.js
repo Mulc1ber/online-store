@@ -13,13 +13,12 @@ const HeaderContainer = ({ className }) => {
 };
 
 export const Header = styled(HeaderContainer)`
-    background: #212121;
-    color: white;
-    padding: 0 2rem;
     position: fixed;
-    width: 100%;
-    // width: 1416px;
     top: 0;
+    width: 100%;
+    padding: 0 2rem;
+    color: white;
+    background: #212121;
     z-index: 100;
 
     & .header-container {
@@ -27,7 +26,6 @@ export const Header = styled(HeaderContainer)`
         justify-content: space-between;
         align-items: center;
         max-width: 1200px;
-        // max-width: 1416px;
         margin: 0 auto;
         padding: 1rem;
     }

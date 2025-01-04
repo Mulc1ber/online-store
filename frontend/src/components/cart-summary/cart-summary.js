@@ -12,13 +12,15 @@ const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => 
     const productsCount = useSelector(selectCounter);
     const roleId = useSelector(selectUserRole);
 
+    const totalPrice = calculateTotal(productsInCart);
+
     return (
         <div>
             <div className={className}>
                 <h3>Итого</h3>
                 <div className="summary-row">
                     <span>Товары ({productsCount})</span>
-                    <span>{calculateTotal(productsInCart)} ₽</span>
+                    <span>{totalPrice} ₽</span>
                 </div>
                 <div className="summary-row">
                     <span>Доставка</span>
@@ -26,7 +28,7 @@ const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => 
                 </div>
                 <div className="summary-total">
                     <span>К оплате</span>
-                    <span>{calculateTotal(productsInCart)} ₽</span>
+                    <span>{totalPrice} ₽</span>
                 </div>
                 <>
                     {roleId === ROLE.GUEST ? (
@@ -46,7 +48,7 @@ const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => 
                             padding={'1rem'}
                             margin={'1rem 0 0'}
                             size={'1.1rem'}
-                            onClick={handleOrderCompleted}
+                            onClick={() => handleOrderCompleted(totalPrice)}
                         >
                             {children}
                         </Button>

@@ -7,6 +7,7 @@ export * from './get-session';
 export * from './add-product';
 export * from './add-category';
 export * from './add-session';
+export * from './add-order';
 export * from './add-user';
 export * from './update-product';
 export * from './update-category';

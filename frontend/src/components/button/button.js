@@ -1,24 +1,7 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const ButtonContainer = ({
-    children,
-    className,
-    active,
-    // width,
-    // height,
-    // margin,
-    // border,
-    // padding,
-    // size,
-    // background,
-    // color,
-    // align,
-    // transition,
-    // hbackground,
-    // hcolor,
-    ...props
-}) => {
+const ButtonContainer = ({ children, className, active, ...props }) => {
     return (
         <button className={`${className} ${active ? 'active' : ''}`} {...props}>
             {children}
@@ -53,16 +36,4 @@ export const Button = styled(ButtonContainer)`
 Button.propTypes = {
     children: PropTypes.node.isRequired,
     active: PropTypes.string,
-    // width: PropTypes.string,
-    // height: PropTypes.string,
-    // margin: PropTypes.string,
-    // border: PropTypes.string,
-    // padding: PropTypes.string,
-    // size: PropTypes.string,
-    // background: PropTypes.string,
-    // color: PropTypes.string,
-    // align: PropTypes.string,
-    // transition: PropTypes.string,
-    // hbackground: PropTypes.string,
-    // hcolor: PropTypes.string,
 };

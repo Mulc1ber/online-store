@@ -1,35 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useMatch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PrivateContent } from '../../components';
 import { ROLE } from '../../constants';
 import { RESET_PRODUCTS_IN_CART } from '../../actions';
+import { selectOrder } from '../../selectors';
 import styled from 'styled-components';
 
 const SuccessfulOrderContainer = ({ className }) => {
-    const [orderDetails, setOrderDetails] = useState({});
-    const [tempListProducts, setTempListProducts] = useState([]);
-
     const dispatch = useDispatch();
     const match = useMatch('/successful-order/:hash');
+    const order = useSelector(selectOrder);
 
     useEffect(() => {
-        setTempListProducts(JSON.parse(localStorage.getItem('cart')));
-        console.log('tempListProducts', tempListProducts);
-
-        // TODO Вытягивать данные о заказе из Redux (БД).
-        // TODO дополняться должно из checkout-steps где выбираем способы и указываем данные покупателя. Из Redux
-        // setOrderDetails((prevOrderDetails) => ({
-        //     ...prevOrderDetails,
-        //     address: 'ул. Ленина, д.10, ТЦ "Центр',
-        //     id: Date.now(),
-        //     created_at: new Date().toLocaleDateString(),
-        //     status: 'processing',
-        //     payment: 'card',
-        //     shipping: 'pickup',
-        //     products: [],
-        // }));
-
         dispatch(RESET_PRODUCTS_IN_CART);
         localStorage.removeItem('cart');
     }, [dispatch]);
@@ -38,7 +21,7 @@ const SuccessfulOrderContainer = ({ className }) => {
         <div className={className}>
             <PrivateContent
                 access={[ROLE.ADMIN, ROLE.BUYER]}
-                hasProductsInCart={tempListProducts}
+                orderProducts={order.products}
                 currentPage={match?.pattern.path}
             >
                 <div className="success-page">
@@ -48,18 +31,29 @@ const SuccessfulOrderContainer = ({ className }) => {
                     <p>Мы отправим подтверждение на вашу почту.</p>
 
                     <div className="order-details">
-                        <div className="order-number">Номер заказа: {orderDetails.id}</div>
-                        <p>Дата заказа: {orderDetails.created_at}</p>
-                        <p>Статус: {orderDetails.status === 'processing' && 'В обработке'}</p>
+                        <div className="order-number">Номер заказа: #{order.hash}</div>
+                        <p>Дата заказа: {order.createdAt}</p>
+                        <p>Статус: {order.status === 'processing' && ' В обработке'}</p>
                         <p>
                             Способ оплаты:
-                            {orderDetails.payment === 'card' ? 'Банковская карта' : 'Наличные'}
+                            {order.userInfo.payment === 'card' ? ' Банковская карта' : ' Наличные'}
                         </p>
                         <p>
                             Адрес доставки:
-                            {orderDetails.shipping === 'pickup' &&
-                                'Самовывоз (ул. Ленина, д.10, ТЦ "Центр)'}
+                            {order.userInfo.shipping === 'pickup'
+                                ? ' Самовывоз (ул. Ленина, д.10, ТЦ "Центр)'
+                                : ' Самовывоз (ул. Ленина, д.10, ТЦ "Центр)'}
                         </p>
+                        <div>
+                            <div className="list-products">Состав заказа:</div>
+                            {order.products.map((product) => (
+                                <div key={product.id}>
+                                    <span>"{product.name}" - </span>
+                                    <span>{product.price * product.quantity}₽ </span>
+                                    <span>({product.quantity}шт.)</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="success-buttons">
@@ -115,7 +109,13 @@ export const SuccessfulOrder = styled(SuccessfulOrderContainer)`
     & .order-number {
         font-size: 1.2rem;
         color: #ff4081;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    & .list-products {
+        font-size: 1.2rem;
+        color: #ff4081;
+        margin: 0.5rem 0 0.2rem;
     }
 
     & .success-buttons {

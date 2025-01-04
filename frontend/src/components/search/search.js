@@ -28,18 +28,6 @@ export const Search = styled(SearchContainer)`
         outline: none;
         box-shadow: 0 0px 3px rgba(255, 64, 129, 1);
     }
-
-    // display: flex;
-    // justify-content: center;
-    // width: 300px;
-    // position: relative;
-
-    // & > input {
-    //     padding-right: 32px;
-    //     &:focus {
-    //         outline: none;
-    //     }
-    // }
 `;
 
 Search.propTypes = {
