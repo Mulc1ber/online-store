@@ -24,10 +24,6 @@ const ProductSchema = mongoose.Schema(
             },
             required: true,
         },
-        // category: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: 'Category',
-        // },
         image: {
             type: String,
             required: true,
