@@ -1,12 +1,17 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../../../../../../../components';
-import styled from 'styled-components';
 import { selectProductsInCart } from '../../../../../../../../selectors';
 import { deleteProductsInCart, updateQuantityProduct } from '../../../../../../../../actions';
+import styled from 'styled-components';
 
 const CartItemsContainer = ({ className }) => {
     const productsInCart = useSelector(selectProductsInCart);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(productsInCart));
+    }, [productsInCart]);
 
     const updateQuantity = (id, quantity) => {
         if (quantity < 1) return;

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ERROR } from '../../../../constants';
 import { Card, Loader, Search, Sort } from '../../../../components';
-import { useServerRequest } from '../../../../hooks';
 import { debounce } from '../../utils';
+import { request } from '../../../../utils';
 import styled from 'styled-components';
 
 const ProductGridContainer = ({ className }) => {
@@ -15,18 +15,18 @@ const ProductGridContainer = ({ className }) => {
     const [currentSort, setCurrentSort] = useState('name-asc');
     const [shouldSearch, setShouldSearch] = useState(false);
 
-    const requestServer = useServerRequest();
-
     const startDelayedSearch = useMemo(() => debounce(setShouldSearch, 300), []);
 
     useEffect(() => {
-        requestServer('fetchProducts', searchPhrase, sort, order).then((products) => {
-            setProducts(products.res);
-            setIsLoading(false);
-            setIsSortingOrFiltering(false);
-        });
+        request(`/api/products?search=${searchPhrase}&sort=${sort}&order=${order}`).then(
+            ({ data: products }) => {
+                setProducts(products);
+                setIsLoading(false);
+                setIsSortingOrFiltering(false);
+            },
+        );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [requestServer, shouldSearch]);
+    }, [shouldSearch]);
 
     const onSearch = ({ target }) => {
         setSearchPhrase(target.value);

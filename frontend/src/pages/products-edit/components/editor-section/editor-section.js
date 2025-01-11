@@ -4,10 +4,11 @@ import { useMatch } from 'react-router-dom';
 import { Button, Loader, ModalWindow, PrivateContent } from '../../../../components';
 import { TableProducts } from '../table-products/table-products';
 import { TableCategories } from '../table-categories/table-categories';
-import { useServerRequest } from '../../../../hooks';
-import { checkAccess } from '../../../../utils';
 import { ROLE } from '../../../../constants';
 import { selectUserRole } from '../../../../selectors';
+import { checkAccess } from '../../../../utils';
+import { request } from '../../../../utils';
+import { checkOnEmpty } from '../../utils';
 import styled from 'styled-components';
 
 const EditorSectionContainer = ({ className }) => {
@@ -22,7 +23,6 @@ const EditorSectionContainer = ({ className }) => {
     const [activeTab, setActiveTab] = useState('tabProducts');
 
     const match = useMatch('/products/edit');
-    const requestServer = useServerRequest();
     const userRole = useSelector(selectUserRole);
 
     useEffect(() => {
@@ -31,19 +31,19 @@ const EditorSectionContainer = ({ className }) => {
         }
 
         Promise.all([
-            requestServer('fetchProducts'),
-            requestServer('fetchCategories'),
-            requestServer('fetchRoles'),
+            request('/api/products'),
+            request('/api/categories'),
+            request('/api/users/roles'),
         ]).then(([productsRes, categoriesRes, rolesRes]) => {
             if (productsRes.error || categoriesRes.error || rolesRes.error) {
                 setErrorMessage(productsRes.error || categoriesRes.error || rolesRes.error);
                 return;
             }
-            setProducts(productsRes.res);
-            setCategories(categoriesRes.res);
+            setProducts(productsRes.data);
+            setCategories(categoriesRes.data);
             setIsLoading(false);
         });
-    }, [requestServer, shouldUpdateProductList, shouldUpdateCategoryList, userRole]);
+    }, [shouldUpdateProductList, shouldUpdateCategoryList, userRole]);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -83,11 +83,22 @@ const EditorSectionContainer = ({ className }) => {
         }
 
         event.preventDefault();
-        setIsLoading(true);
-        requestServer('saveProduct', editingProduct).then(() => {
-            setShouldUpdateProductList(!shouldUpdateProductList);
-        });
-        setEditingProduct(null);
+
+        if (!checkOnEmpty(editingProduct)) {
+            setIsLoading(true);
+
+            if (editingProduct.id) {
+                request(`/api/products/${editingProduct.id}`, 'PATCH', editingProduct).then(() => {
+                    setShouldUpdateProductList(!shouldUpdateProductList);
+                });
+            } else {
+                request(`/api/products/`, 'POST', editingProduct).then(() => {
+                    setShouldUpdateProductList(!shouldUpdateProductList);
+                });
+            }
+
+            setEditingProduct(null);
+        }
     };
 
     const handleSaveCategory = (event, editingCategory) => {
@@ -96,11 +107,24 @@ const EditorSectionContainer = ({ className }) => {
         }
 
         event.preventDefault();
-        setIsLoading(true);
-        requestServer('saveCategory', editingCategory).then(() => {
-            setShouldUpdateCategoryList(!shouldUpdateCategoryList);
-        });
-        setEditingCategory(null);
+
+        if (!checkOnEmpty(editingCategory)) {
+            setIsLoading(true);
+
+            if (editingCategory.id) {
+                request(`/api/categories/${editingCategory.id}`, 'PATCH', editingCategory).then(
+                    () => {
+                        setShouldUpdateCategoryList(!shouldUpdateCategoryList);
+                    },
+                );
+            } else {
+                request(`/api/categories/`, 'POST', editingCategory).then(() => {
+                    setShouldUpdateCategoryList(!shouldUpdateCategoryList);
+                });
+            }
+
+            setEditingCategory(null);
+        }
     };
 
     const handleDelete = (elementId) => {
@@ -109,14 +133,16 @@ const EditorSectionContainer = ({ className }) => {
         }
 
         setIsLoading(true);
-        requestServer(
-            `${activeTab === 'tabProducts' ? 'removeProduct' : 'removeCategory'}`,
-            elementId,
-        ).then(() => {
-            activeTab === 'tabProducts'
-                ? setShouldUpdateProductList(!shouldUpdateProductList)
-                : setShouldUpdateCategoryList(!shouldUpdateCategoryList);
-        });
+
+        if (activeTab === 'tabProducts') {
+            request(`/api/products/${elementId}`, 'DELETE').then(() => {
+                setShouldUpdateProductList(!shouldUpdateProductList);
+            });
+        } else {
+            request(`/api/categories/${elementId}`, 'DELETE').then(() => {
+                setShouldUpdateCategoryList(!shouldUpdateCategoryList);
+            });
+        }
     };
 
     return (

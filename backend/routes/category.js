@@ -13,9 +13,13 @@ const ROLES = require('../constants/roles');
 const router = express.Router({ mergeParams: true });
 
 router.get('/', async (req, res) => {
-    const categories = await getCategories();
+    try {
+        const categories = await getCategories();
 
-    res.send({ data: categories.map(mapCategory) });
+        res.send({ data: categories.map(mapCategory) });
+    } catch (error) {
+        res.send({ error: 'Ошибка при получении категорий' || 'Unknown error' });
+    }
 });
 
 // authenticated

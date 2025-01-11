@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { CartSummary, HeroHeading, PrivateContent, Wrapper } from '../../components';
 import { CheckoutSteps } from './components';
-import { ROLE } from '../../constants';
-import { useServerRequest } from '../../hooks';
+import { ORDER_STATUS, ROLE } from '../../constants';
 import { checkAccess } from '../../utils';
-import { selectUserRole } from '../../selectors';
+import { selectProductsInCart, selectUserRole } from '../../selectors';
 import { PATTERN_EMAIL } from './utils/check-email';
 import { saveOrderAsync } from '../../actions';
 import styled from 'styled-components';
@@ -21,8 +20,7 @@ const CheckoutContainer = ({ className }) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [serverError, setServerError] = useState(null);
 
-    const productsInCart = JSON.parse(localStorage.getItem('cart'));
-    const requestServer = useServerRequest();
+    const productsInCart = useSelector(selectProductsInCart);
     const userRole = useSelector(selectUserRole);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -34,17 +32,28 @@ const CheckoutContainer = ({ className }) => {
         }
 
         if (orderInfo.username !== '' && PATTERN_EMAIL.test(orderInfo.email)) {
-            const { login: userLogin } = JSON.parse(sessionStorage.getItem('userData'));
-
-            dispatch(
-                saveOrderAsync(requestServer, totalPrice, orderInfo, userLogin, productsInCart),
-            ).then((orderData) => {
+            const orderResult = {
+                status: ORDER_STATUS.PROCESSING,
+                totalPrice: totalPrice,
+                userInfo: orderInfo,
+                products: productsInCart.map(
+                    ({ id, imageUrl, name, category, price, quantity }) => ({
+                        id,
+                        imageUrl,
+                        name,
+                        category,
+                        price,
+                        quantity,
+                    }),
+                ),
+            };
+            dispatch(saveOrderAsync(orderResult)).then((orderData) => {
                 if (orderData.error) {
-                    setServerError('Что-то пошло не так. Попробуйте еще раз позднее.');
+                    setServerError(orderData.error);
                     return;
                 }
 
-                navigate(`/successful-order/${orderData.res?.hash}`);
+                navigate(`/successful-order/${orderData.data?.id}`);
             });
             setErrorMessage(null);
         } else {

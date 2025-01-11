@@ -14,15 +14,23 @@ const ROLES = require('../constants/roles');
 const router = express.Router({ mergeParams: true });
 
 router.get('/', async (req, res) => {
-    const products = await getProducts(req.query.search, req.query.sort, req.query.order);
+    try {
+        const products = await getProducts(req.query.search, req.query.sort, req.query.order);
 
-    res.send({ data: products.map(mapProduct) });
+        res.send({ data: products.map(mapProduct) });
+    } catch (error) {
+        res.send({ error: 'Ошибка при получении товаров' || 'Unknown error' });
+    }
 });
 
 router.get('/:id', async (req, res) => {
-    const product = await getProduct(req.params.id);
+    try {
+        const product = await getProduct(req.params.id);
 
-    res.send({ data: mapProduct(product) });
+        res.send({ data: mapProduct(product) });
+    } catch (error) {
+        res.send({ error: 'Такого товара не существует' || 'Unknown error' });
+    }
 });
 
 // authenticated
@@ -47,8 +55,6 @@ router.post('/', authenticated, hasRole([ROLES.ADMIN]), async (req, res) => {
 });
 
 router.patch('/:id', authenticated, hasRole([ROLES.ADMIN]), async (req, res) => {
-    console.log(req.body);
-
     const updateProduct = await editProduct(req.params.id, {
         name: req.body.name,
         price: req.body.price,

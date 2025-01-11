@@ -14,9 +14,13 @@ router.get('/', authenticated, hasRole([ROLES.ADMIN]), async (req, res) => {
 });
 
 router.get('/roles', authenticated, hasRole([ROLES.ADMIN]), async (req, res) => {
-    const roles = getRoles();
+    try {
+        const roles = getRoles();
 
-    res.send({ data: roles });
+        res.send({ data: roles });
+    } catch (error) {
+        res.send({ error: 'Ошибка при получении ролей' || 'Unknown error' });
+    }
 });
 
 module.exports = router;

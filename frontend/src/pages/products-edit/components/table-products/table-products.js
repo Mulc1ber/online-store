@@ -23,7 +23,9 @@ const TableProductsContainer = ({ className, products, handleEdit, handleDelete 
                 <tbody>
                     {products.map((product) => (
                         <tr key={product.id}>
-                            <td>{product.id}</td>
+                            <td className="reduction" title={product.id}>
+                                {product.id}
+                            </td>
                             <td className="product-image-cell">
                                 <img src={product.imageUrl} alt={product.name} />
                             </td>

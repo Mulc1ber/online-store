@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card } from '../../../../../../components';
-import { useServerRequest } from '../../../../../../hooks';
 import { filteredProducts } from '../../../../utils';
+import { request } from '../../../../../../utils';
 import styled from 'styled-components';
 
 const CatalogProductsGridContainer = ({ className }) => {
     const [products, setProducts] = useState([]);
 
     const params = useParams();
-    const requestServer = useServerRequest();
 
     useEffect(() => {
-        requestServer('fetchProducts').then((products) => {
-            setProducts(products.res);
+        request('/api/products').then(({ data: products }) => {
+            setProducts(products);
         });
-    }, [requestServer]);
+    }, []);
 
     return (
         <div className={className}>

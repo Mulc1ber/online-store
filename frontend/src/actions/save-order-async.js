@@ -1,12 +1,11 @@
+import { request } from '../utils';
 import { setOrderData } from './set-order-data';
 
-export const saveOrderAsync =
-    (requestServer, totalPrice, orderInfo, userLogin, productsInCart) => (dispatch) =>
-        requestServer('saveOrder', totalPrice, orderInfo, userLogin, productsInCart).then(
-            ({ error, res }) => {
-                if (error) return { error };
+export const saveOrderAsync = (orderResult) => (dispatch) => {
+    return request('/api/orders', 'POST', orderResult).then((orderData) => {
+        if (orderData.error) return orderData;
 
-                dispatch(setOrderData(res));
-                return { res };
-            },
-        );
+        dispatch(setOrderData(orderData.data));
+        return orderData;
+    });
+};

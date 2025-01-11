@@ -1,20 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Icon } from '../../../../../../components';
-import { useServerRequest } from '../../../../../../hooks';
+import { request } from '../../../../../../utils';
 import styled from 'styled-components';
 
 const CatalogSidebarContainer = ({ className }) => {
     const [categories, setCategories] = useState([]);
 
     const params = useParams();
-    const requestServer = useServerRequest();
 
     useEffect(() => {
-        requestServer('fetchCategories').then((categories) => {
-            setCategories(categories.res);
+        request('/api/categories').then(({ data: categories }) => {
+            setCategories(categories);
         });
-    }, [requestServer]);
+    }, []);
 
     return (
         <aside className={className}>

@@ -40,7 +40,7 @@ const OrderSchema = mongoose.Schema(
             {
                 type: {
                     id: {
-                        type: Number,
+                        type: String,
                         required: true,
                     },
                     image: {

@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { AuthTabs, Button, Input } from '../../components';
-import { server } from '../../bff';
 import { setUser } from '../../actions';
 import { useResetForm } from '../../hooks';
 import { selectUserRole } from '../../selectors';
-import { ROLE } from '../../bff/constants';
+import { ROLE } from '../../constants';
 import styled from 'styled-components';
+import { request } from '../../utils';
 
 const authFormSchema = yup.object().shape({
     login: yup
@@ -50,14 +50,14 @@ const AuthorizationContainer = ({ className }) => {
     useResetForm(reset);
 
     const onSubmit = ({ login, password }) => {
-        server.authorize(login, password).then(({ error, res }) => {
+        request('/api/login', 'POST', { login, password }).then(({ error, user }) => {
             if (error) {
                 setServerError(`Ошибка запроса: ${error}`);
                 return;
             }
 
-            dispatch(setUser(res));
-            sessionStorage.setItem('userData', JSON.stringify(res));
+            dispatch(setUser(user));
+            sessionStorage.setItem('userData', JSON.stringify(user));
         });
     };
 

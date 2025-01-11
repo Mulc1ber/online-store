@@ -11,14 +11,12 @@ import {
     selectProductsInCart,
     selectUserLogin,
     selectUserRole,
-    selectUserSession,
 } from '../../../../selectors';
 import styled from 'styled-components';
 
 const NavigationContainer = ({ className }) => {
     const roleId = useSelector(selectUserRole);
     const login = useSelector(selectUserLogin);
-    const session = useSelector(selectUserSession);
     const countInCart = useSelector(selectCounter);
     const productsInCart = useSelector(selectProductsInCart);
     const dispatch = useDispatch();
@@ -27,8 +25,8 @@ const NavigationContainer = ({ className }) => {
         dispatch(updateCounter(productsInCart.reduce((total, item) => total + item.quantity, 0)));
     }, [productsInCart, dispatch]);
 
-    const onLogout = (session) => {
-        dispatch(logout(session));
+    const onLogout = () => {
+        dispatch(logout());
         sessionStorage.removeItem('userData');
     };
 
@@ -81,7 +79,7 @@ const NavigationContainer = ({ className }) => {
                             size={'1.5rem'}
                             color={'#ff4081'}
                             isButton={true}
-                            onClick={() => onLogout(session)}
+                            onClick={() => onLogout()}
                         />
                     </div>
                 )}

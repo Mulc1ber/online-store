@@ -9,10 +9,12 @@ const routes = require('./routes');
 const port = 3001;
 const app = express();
 
+app.use(express.static('../frontend/build'));
+
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/', routes); // TODO после поменять на /api
+app.use('/api', routes);
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     app.listen(port, () => {

@@ -11,7 +11,7 @@ export const PROP_TYPE = {
     }),
     ERROR: PropTypes.oneOfType([PropTypes.string, PropTypes.exact(null)]),
     PRODUCTS: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         category: PropTypes.shape({
@@ -30,7 +30,7 @@ export const PROP_TYPE = {
         name: PropTypes.string.isRequired,
     }),
     ORDER_PRODUCTS: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
         category: PropTypes.shape({

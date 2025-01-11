@@ -3,8 +3,8 @@ import { Hero, Wrapper } from '../../components';
 import { DetailsSection } from './components';
 import { useDispatch } from 'react-redux';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { useServerRequest } from '../../hooks';
 import { RESET_PRODUCT_DATA } from '../../actions';
+import { request } from '../../utils';
 import styled from 'styled-components';
 
 const ProductContainer = ({ className }) => {
@@ -14,23 +14,22 @@ const ProductContainer = ({ className }) => {
 
     const params = useParams();
     const dispatch = useDispatch();
-    const requestServer = useServerRequest();
 
     useLayoutEffect(() => {
         dispatch(RESET_PRODUCT_DATA);
     }, [dispatch]);
 
     useEffect(() => {
-        requestServer('fetchProduct', Number(params.id)).then((productRes) => {
+        request(`/api/products/${params.id}`).then((productRes) => {
             if (productRes.error) {
                 setErrorMessage(productRes.error);
                 setIsLoading(false);
                 return;
             }
-            setProduct(productRes.res);
+            setProduct(productRes.data);
             setIsLoading(false);
         });
-    }, [requestServer, params.id]);
+    }, [params.id]);
 
     return (
         <Wrapper>

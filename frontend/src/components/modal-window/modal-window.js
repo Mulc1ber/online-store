@@ -55,7 +55,9 @@ const ModalWindowContainer = ({
                         <h2>{editingProduct.id ? 'Редактировать товар' : 'Новый товар'}</h2>
                         <form onSubmit={(event) => handleSaveProduct(event, editingProduct)}>
                             <div className="form-group">
-                                <label>Название:</label>
+                                <label>
+                                    Название<span>*</span> :
+                                </label>
                                 <Input
                                     padding={'0.7rem'}
                                     border={'1px solid #ddd'}
@@ -66,7 +68,9 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Изображение:</label>
+                                <label>
+                                    Изображение<span>*</span> :
+                                </label>
                                 <Input
                                     padding={'0.7rem'}
                                     border={'1px solid #ddd'}
@@ -77,7 +81,9 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Категория:</label>
+                                <label>
+                                    Категория<span>*</span> :
+                                </label>
                                 <Select
                                     name="category"
                                     value={editingProduct.category?.label}
@@ -91,7 +97,9 @@ const ModalWindowContainer = ({
                                 </Select>
                             </div>
                             <div className="form-group">
-                                <label>Описание:</label>
+                                <label>
+                                    Описание<span>*</span> :
+                                </label>
                                 <textarea
                                     name="description"
                                     value={editingProduct.description}
@@ -99,7 +107,9 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Спецификация:</label>
+                                <label>
+                                    Спецификация<span>*</span> :
+                                </label>
                                 <textarea
                                     name="specifications"
                                     value={editingProduct.specifications}
@@ -107,7 +117,9 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Доставка:</label>
+                                <label>
+                                    Доставка<span>*</span> :
+                                </label>
                                 <textarea
                                     name="shipping"
                                     value={editingProduct.shipping}
@@ -115,7 +127,9 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Цена:</label>
+                                <label>
+                                    Цена<span>*</span> :
+                                </label>
                                 <Input
                                     padding={'0.7rem'}
                                     border={'1px solid #ddd'}
@@ -128,7 +142,9 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Количество:</label>
+                                <label>
+                                    Количество<span>*</span> :
+                                </label>
                                 <Input
                                     padding={'0.7rem'}
                                     border={'1px solid #ddd'}
@@ -165,7 +181,9 @@ const ModalWindowContainer = ({
                         </h2>
                         <form onSubmit={(event) => handleSaveCategory(event, editingCategory)}>
                             <div className="form-group">
-                                <label>Ярлык / Маркировка:</label>
+                                <label>
+                                    Ярлык / Маркировка<span>*</span> :
+                                </label>
                                 <Input
                                     padding={'0.7rem'}
                                     border={'1px solid #ddd'}
@@ -176,7 +194,9 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Название:</label>
+                                <label>
+                                    Название<span>*</span> :
+                                </label>
                                 <Input
                                     padding={'0.7rem'}
                                     border={'1px solid #ddd'}
@@ -187,7 +207,11 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="modal-actions">
-                                <Button type="submit" padding={'0.8rem 1.5rem'}>
+                                <Button
+                                    type="submit"
+                                    padding={'0.8rem 1.5rem'}
+                                    disabled={!editingCategory}
+                                >
                                     Сохранить
                                 </Button>
                                 <Button
@@ -240,6 +264,9 @@ export const ModalWindow = styled(ModalWindowContainer)`
             display: block;
             margin-bottom: 0.2rem;
             font-weight: bold;
+            & span {
+                color: red;
+            }
         }
 
         & textarea {
