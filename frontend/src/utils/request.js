@@ -1,8 +1,8 @@
 export function request(url, method, data) {
-    return fetch(url, {
+    return fetch('/api' + url, {
         method: method || 'GET',
         headers: {
-            'content-type': 'application/json', //;charset=UTF-8
+            'content-type': 'application/json',
         },
         body: data ? JSON.stringify(data) : undefined,
     }).then((res) => res.json());
