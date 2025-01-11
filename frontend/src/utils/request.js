@@ -1,5 +1,5 @@
 export function request(url, method, data) {
-    return fetch('/api' + url, {
+    return fetch(url, {
         method: method || 'GET',
         headers: {
             'content-type': 'application/json',

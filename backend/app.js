@@ -4,7 +4,6 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const chalk = require('chalk');
 const routes = require('./routes');
 
 const port = 3001;
@@ -23,6 +22,6 @@ app.get('*', (req, res) => {
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     app.listen(port, () => {
-        console.log(chalk.green(`Server is running on port ${port}`));
+        console.log(`Server started on port ${port}`);
     });
 });
