@@ -2,10 +2,13 @@ import { useEffect } from 'react';
 import { Link, useMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { PrivateContent } from '../../components';
-import { ROLE } from '../../constants';
+import { ORDER_STATUS, ROLE } from '../../constants';
 import { RESET_PRODUCTS_IN_CART } from '../../actions';
 import { selectOrder } from '../../selectors';
 import styled from 'styled-components';
+import { sanitizeOrderDate } from './utils';
+import { PAYMENT_METHOD } from '../checkout/utils/payment-method';
+import { SHIPPING_METHOD } from '../checkout/utils/shipping-method';
 
 const SuccessfulOrderContainer = ({ className }) => {
     const dispatch = useDispatch();
@@ -31,16 +34,18 @@ const SuccessfulOrderContainer = ({ className }) => {
                     <p>Мы отправим подтверждение на вашу почту.</p>
 
                     <div className="order-details">
-                        <div className="order-number">Номер заказа: #{order.hash}</div>
-                        <p>Дата заказа: {order.createdAt}</p>
-                        <p>Статус: {order.status === 'processing' && ' В обработке'}</p>
+                        <div className="order-number">Ваш заказ: #{order.id}</div>
+                        <p>Дата заказа: {sanitizeOrderDate(order.createdAt)}</p>
+                        <p>Статус: {order.status === ORDER_STATUS.PROCESSING && ' В обработке'}</p>
                         <p>
                             Способ оплаты:
-                            {order.userInfo.payment === 'card' ? ' Банковская карта' : ' Наличные'}
+                            {order.userInfo.payment === PAYMENT_METHOD.CARD
+                                ? ' Банковская карта'
+                                : ' Наличные'}
                         </p>
                         <p>
                             Адрес доставки:
-                            {order.userInfo.shipping === 'pickup'
+                            {order.userInfo.shipping === SHIPPING_METHOD.PICKUP
                                 ? ' Самовывоз (ул. Ленина, д.10, ТЦ "Центр)'
                                 : ' Самовывоз (ул. Ленина, д.10, ТЦ "Центр)'}
                         </p>

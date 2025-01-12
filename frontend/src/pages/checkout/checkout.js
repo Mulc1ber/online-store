@@ -9,11 +9,13 @@ import { selectProductsInCart, selectUserRole } from '../../selectors';
 import { PATTERN_EMAIL } from './utils/check-email';
 import { saveOrderAsync } from '../../actions';
 import styled from 'styled-components';
+import { PAYMENT_METHOD } from './utils/payment-method';
+import { SHIPPING_METHOD } from './utils/shipping-method';
 
 const CheckoutContainer = ({ className }) => {
     const [orderInfo, setOrderInfo] = useState({
-        shipping: 'pickup',
-        payment: 'card',
+        shipping: SHIPPING_METHOD.PICKUP,
+        payment: PAYMENT_METHOD.CARD,
         username: '',
         email: '',
     });

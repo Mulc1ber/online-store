@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { Icon, Input } from '../../../../components';
 import { PROP_TYPE } from '../../../../constants';
 import styled from 'styled-components';
+import { SHIPPING_METHOD } from '../../utils/shipping-method';
+import { PAYMENT_METHOD } from '../../utils/payment-method';
 
 const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessage }) => {
     const handleDeliveryOption = (option) => {
@@ -53,7 +55,7 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                 <h2 className="step-title">Шаг 2: Выберите способ оплаты</h2>
                 <div className="payment-methods">
                     <div
-                        className={`payment-method ${orderInfo.payment === 'card' ? 'active' : ''}`}
+                        className={`payment-method ${orderInfo.payment === PAYMENT_METHOD.CARD ? 'active' : ''}`}
                     >
                         <label htmlFor="card" className="payment-content">
                             <input
@@ -61,8 +63,8 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                                 name="payment"
                                 id="card"
                                 value="card"
-                                onChange={() => handlePaymentMethod('card')}
-                                checked={orderInfo.payment === 'card'}
+                                onChange={() => handlePaymentMethod(PAYMENT_METHOD.CARD)}
+                                checked={orderInfo.payment === PAYMENT_METHOD.CARD}
                             />
                             <label></label>
                             <div>
@@ -72,7 +74,7 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                         </label>
                     </div>
                     <div
-                        className={`payment-method ${orderInfo.payment === 'cash' ? 'active' : ''}`}
+                        className={`payment-method ${orderInfo.payment === PAYMENT_METHOD.CASH ? 'active' : ''}`}
                     >
                         <label htmlFor="cash" className="payment-content">
                             <input
@@ -80,8 +82,8 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                                 name="payment"
                                 id="cash"
                                 value="cash"
-                                onChange={() => handlePaymentMethod('cash')}
-                                checked={orderInfo.payment === 'cash'}
+                                onChange={() => handlePaymentMethod(PAYMENT_METHOD.CASH)}
+                                checked={orderInfo.payment === PAYMENT_METHOD.CASH}
                             />
                             <label></label>
                             <div>
@@ -97,7 +99,7 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                 <h2 className="step-title">Шаг 3: Выберите способ доставки</h2>
                 <div className="delivery-options">
                     <div
-                        className={`delivery-option ${orderInfo.shipping === 'pickup' ? 'active' : ''}`}
+                        className={`delivery-option ${orderInfo.shipping === SHIPPING_METHOD.PICKUP ? 'active' : ''}`}
                     >
                         <label htmlFor="pickup" className="delivery-content">
                             <input
@@ -105,8 +107,8 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                                 name="shipping"
                                 id="pickup"
                                 value="pickup"
-                                onChange={() => handleDeliveryOption('pickup')}
-                                checked={orderInfo.shipping === 'pickup'}
+                                onChange={() => handleDeliveryOption(SHIPPING_METHOD.PICKUP)}
+                                checked={orderInfo.shipping === SHIPPING_METHOD.PICKUP}
                             />
                             <label></label>
                             <div>
@@ -125,7 +127,7 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                         </label>
                     </div>
                     <div
-                        className={`delivery-option ${orderInfo.shipping === 'courier' ? 'active' : ''}`}
+                        className={`delivery-option ${orderInfo.shipping === SHIPPING_METHOD.COURIER ? 'active' : ''}`}
                     >
                         <label htmlFor="courier" className="delivery-content">
                             <input
@@ -133,8 +135,8 @@ const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessa
                                 name="shipping"
                                 id="courier"
                                 value="courier"
-                                onChange={() => handleDeliveryOption('courier')}
-                                checked={orderInfo.shipping === 'courier'}
+                                onChange={() => handleDeliveryOption(SHIPPING_METHOD.COURIER)}
+                                checked={orderInfo.shipping === SHIPPING_METHOD.COURIER}
                             />
                             <label></label>
                             <div>
