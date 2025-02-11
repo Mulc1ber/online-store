@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { Icon, Input } from '../../../../components';
 import { PROP_TYPE } from '../../../../constants';
-import styled from 'styled-components';
 import { SHIPPING_METHOD } from '../../utils/shipping-method';
 import { PAYMENT_METHOD } from '../../utils/payment-method';
+import styled from 'styled-components';
 
 const CheckoutStepsContainer = ({ className, orderInfo, setOrderInfo, errorMessage }) => {
     const handleDeliveryOption = (option) => {

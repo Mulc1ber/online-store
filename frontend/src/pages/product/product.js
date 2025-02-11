@@ -1,61 +1,54 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Hero, Wrapper } from '../../components';
-import { DetailsSection } from './components';
-import { useDispatch } from 'react-redux';
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { RESET_PRODUCT_DATA } from '../../actions';
-import { request } from '../../utils';
+import { BackButton } from '../../components';
+import { AdditionalInfo, DetailsContainer } from './components';
+import { loadProductAsync } from '../../actions';
+import { selectProduct } from '../../selectors';
 import styled from 'styled-components';
 
 const ProductContainer = ({ className }) => {
-    const [product, setProduct] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [errorMessage, setErrorMessage] = useState('');
-
-    const params = useParams();
+    const { product, isLoading, errorMessage } = useSelector(selectProduct);
     const dispatch = useDispatch();
-
-    useLayoutEffect(() => {
-        dispatch(RESET_PRODUCT_DATA);
-    }, [dispatch]);
+    const params = useParams();
 
     useEffect(() => {
-        request(`/api/products/${params.id}`).then((productRes) => {
-            if (productRes.error) {
-                setErrorMessage(productRes.error);
-                setIsLoading(false);
-                return;
-            }
-            setProduct(productRes.data);
-            setIsLoading(false);
-        });
-    }, [params.id]);
+        dispatch(loadProductAsync(params.id));
+    }, [dispatch, params.id]);
 
     return (
-        <Wrapper>
-            <Hero>
-                {product && <h1>{product.name}</h1>}
-                <p>Подробная информация о товаре</p>
-            </Hero>
-
-            <div className={className}>
-                {isLoading ? (
-                    <h2 className="loading-product">Загрузка...</h2>
-                ) : (
-                    <>
-                        {!errorMessage && product ? (
-                            <DetailsSection product={product} />
-                        ) : (
-                            <h2 className="product-not-found">{errorMessage}</h2>
-                        )}
-                    </>
-                )}
-            </div>
-        </Wrapper>
+        <div className={className}>
+            {isLoading ? (
+                <h2 className="loading-product">Загрузка...</h2>
+            ) : (
+                <>
+                    {!errorMessage && product ? (
+                        <div className="product-container">
+                            <BackButton />
+                            <DetailsContainer product={product} />
+                            <AdditionalInfo product={product} />
+                        </div>
+                    ) : (
+                        <h2 className="product-not-found">{errorMessage}</h2>
+                    )}
+                </>
+            )}
+        </div>
     );
 };
 
 export const Product = styled(ProductContainer)`
+    & .product-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background: white;
+        border-radius: 10px;
+        padding: 1rem 2rem 1.5rem;
+        margin: 2rem 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
     & .loading-product,
     & .product-not-found {
         display: flex;

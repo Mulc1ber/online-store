@@ -4,6 +4,7 @@ import { Input } from '../input/input';
 import { Select } from '../select/select';
 import { PROP_TYPE } from '../../constants';
 import styled from 'styled-components';
+import { TABS_EDIT } from '../../pages/products-edit/utils';
 
 const ModalWindowContainer = ({
     className,
@@ -50,7 +51,7 @@ const ModalWindowContainer = ({
     return (
         <div className={className}>
             <div className="edit-modal-content">
-                {activeTab === 'tabProducts' ? (
+                {activeTab === TABS_EDIT.PRODUCTS ? (
                     <>
                         <h2>{editingProduct.id ? 'Редактировать товар' : 'Новый товар'}</h2>
                         <form onSubmit={(event) => handleSaveProduct(event, editingProduct)}>
@@ -207,11 +208,7 @@ const ModalWindowContainer = ({
                                 />
                             </div>
                             <div className="modal-actions">
-                                <Button
-                                    type="submit"
-                                    padding={'0.8rem 1.5rem'}
-                                    disabled={!editingCategory}
-                                >
+                                <Button type="submit" padding={'0.8rem 1.5rem'}>
                                     Сохранить
                                 </Button>
                                 <Button

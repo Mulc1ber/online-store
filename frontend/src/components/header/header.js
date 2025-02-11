@@ -13,7 +13,7 @@ const HeaderContainer = ({ className }) => {
 };
 
 export const Header = styled(HeaderContainer)`
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
     padding: 0 2rem;

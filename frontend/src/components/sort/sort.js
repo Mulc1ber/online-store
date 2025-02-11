@@ -23,6 +23,7 @@ export const Sort = styled(SortContainer)`
 
     & span {
         font-size: 0.9rem;
+        width: 110px;
     }
 
     & select {

@@ -5,12 +5,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { AuthTabs, Button, Input } from '../../components';
-import { setUser } from '../../actions';
+import { registerUserAsync } from '../../actions';
 import { useResetForm } from '../../hooks';
 import { selectUserRole } from '../../selectors';
 import { ROLE } from '../../constants';
 import styled from 'styled-components';
-import { request } from '../../utils';
 
 const regFormSchema = yup.object().shape({
     login: yup
@@ -55,15 +54,13 @@ const RegistrationContainer = ({ className }) => {
     useResetForm(reset);
 
     const onSubmit = ({ login, password }) => {
-        request('/api/register', 'POST', { login, password }).then(({ error, user }) => {
-            if (error) {
-                setServerError(`Ошибка запроса: ${error}`);
-                return;
-            }
-
-            dispatch(setUser(user));
-            sessionStorage.setItem('userData', JSON.stringify(user));
-        });
+        dispatch(registerUserAsync(login, password))
+            .then(() => {
+                console.log('Успешная регистрация');
+            })
+            .catch((error) => {
+                setServerError(`Ошибка запроса: ${error.message}`);
+            });
     };
 
     const formError =
@@ -122,7 +119,7 @@ export const Registration = styled(RegistrationContainer)`
     justify-content: center;
     align-items: center;
     position: relative;
-    height: calc(100vh - 210px);
+    height: calc(100vh - 242px);
 
     & .container {
         width: 400px;
@@ -137,6 +134,12 @@ export const Registration = styled(RegistrationContainer)`
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+
+        & input:focus {
+            outline: none;
+            border-color: #ff4081;
+            box-shadow: 0 0px 3px rgba(255, 64, 129, 1);
+        }
     }
 
     & .auth-form-error {

@@ -6,7 +6,7 @@ const HeroHeadingContainer = ({ className, children }) => {
 };
 
 export const HeroHeading = styled(HeroHeadingContainer)`
-    margin-bottom: 3rem;
+    margin-bottom: ${({ margin = '0' }) => margin};
     text-transform: uppercase;
 `;
 

@@ -3,7 +3,6 @@ import { ROLE } from '../constants';
 
 const initialOrderState = {
     id: null,
-    hash: null,
     createdAt: null,
     status: null,
     totalPrice: 0,

@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import { Error, Footer, Header } from './components';
-import { ERROR } from './constants';
+import { Error } from './components';
+import { ERROR, HERO } from './constants';
 import {
     Main,
     About,
@@ -13,24 +13,12 @@ import {
     ProductsEdit,
     Checkout,
     SuccessfulOrder,
+    Account,
 } from './pages';
-import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useLayoutEffect } from 'react';
 import { setProductsInCart, setUser } from './actions';
-
-const Page = styled.div`
-    width: 100%;
-    min-height: calc(100vh - 142px);
-    padding: 68px 0 0;
-`;
-
-const AppColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
+import { AppLayout, CommonLayout } from './layouts';
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -59,27 +47,52 @@ export const App = () => {
     }, [dispatch]);
 
     return (
-        <AppColumn>
-            <Header />
-            <Page>
-                <Routes>
+        <Routes>
+            <Route element={<AppLayout />}>
+                <Route path="/" element={<CommonLayout option={HERO.MAIN} />}>
                     <Route path="/" element={<Main />} />
-                    <Route path="/login" element={<Authorization />} />
-                    <Route path="/register" element={<Registration />} />
-                    <Route path="/product/:id" element={<Product />} />
-                    <Route path="/products/edit" element={<ProductsEdit />} />
-                    <Route path="/catalog" element={<Catalog />} />
-                    <Route path="/catalog/:name" element={<Catalog />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/checkout" element={<Checkout />}></Route>
-                    <Route path="/successful-order/:hash" element={<SuccessfulOrder />}></Route>
+                </Route>
 
-                    <Route path="*" element={<Error error={ERROR.PAGE_NOT_EXIST} />} />
-                </Routes>
-            </Page>
-            <Footer />
-        </AppColumn>
+                <Route path="/" element={<CommonLayout option={HERO.ACCOUNT} />}>
+                    <Route path="/account" element={<Account />} />
+                </Route>
+
+                <Route path="/" element={<CommonLayout option={HERO.PRODUCT} />}>
+                    <Route path="/product/:id" element={<Product />} />
+                </Route>
+
+                <Route path="/" element={<CommonLayout option={HERO.CATALOG} />}>
+                    <Route path="/catalog" element={<Catalog />} />
+                </Route>
+
+                <Route path="/" element={<CommonLayout option={HERO.CATALOG} />}>
+                    <Route path="/catalog/:name" element={<Catalog />} />
+                </Route>
+
+                <Route path="/" element={<CommonLayout option={HERO.ABOUT} />}>
+                    <Route path="/about" element={<About />} />
+                </Route>
+
+                <Route path="/" element={<CommonLayout option={HERO.CONTACT} />}>
+                    <Route path="/contact" element={<Contact />} />
+                </Route>
+
+                <Route path="/" element={<CommonLayout option={HERO.CART} />}>
+                    <Route path="/cart" element={<Cart />} />
+                </Route>
+
+                {/* <Route path="/account" element={<Account />} /> */}
+
+                <Route path="/products/edit" element={<ProductsEdit />} />
+
+                <Route path="/login" element={<Authorization />} />
+                <Route path="/register" element={<Registration />} />
+
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/successful-order/:hash" element={<SuccessfulOrder />} />
+
+                <Route path="*" element={<Error error={ERROR.PAGE_NOT_EXIST} />} />
+            </Route>
+        </Routes>
     );
 };

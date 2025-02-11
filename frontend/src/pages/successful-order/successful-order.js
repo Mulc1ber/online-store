@@ -5,10 +5,10 @@ import { PrivateContent } from '../../components';
 import { ORDER_STATUS, ROLE } from '../../constants';
 import { RESET_PRODUCTS_IN_CART } from '../../actions';
 import { selectOrder } from '../../selectors';
-import styled from 'styled-components';
 import { sanitizeOrderDate } from './utils';
 import { PAYMENT_METHOD } from '../checkout/utils/payment-method';
 import { SHIPPING_METHOD } from '../checkout/utils/shipping-method';
+import styled from 'styled-components';
 
 const SuccessfulOrderContainer = ({ className }) => {
     const dispatch = useDispatch();
@@ -21,12 +21,12 @@ const SuccessfulOrderContainer = ({ className }) => {
     }, [dispatch]);
 
     return (
-        <div className={className}>
-            <PrivateContent
-                access={[ROLE.ADMIN, ROLE.BUYER]}
-                orderProducts={order.products}
-                currentPage={match?.pattern.path}
-            >
+        <PrivateContent
+            access={[ROLE.ADMIN, ROLE.BUYER]}
+            orderProducts={order.products}
+            currentPage={match?.pattern.path}
+        >
+            <div className={className}>
                 <div className="success-page">
                     <div className="success-icon">✅</div>
                     <h1 className="success-message">Заказ успешно оформлен!</h1>
@@ -65,25 +65,17 @@ const SuccessfulOrderContainer = ({ className }) => {
                         <Link to={'/'} className="success-button primary-button">
                             Продолжить покупки
                         </Link>
-
-                        {/* <Link className="success-button secondary-button" to={'/orders'}>
-                        Мои заказы
-                    </Link> */}
                     </div>
                 </div>
-            </PrivateContent>
-        </div>
+            </div>
+        </PrivateContent>
     );
 };
 
 export const SuccessfulOrder = styled(SuccessfulOrderContainer)`
-    margin: 2rem auto auto;
-    padding: 2rem;
-    max-width: 1416px;
-
     & .success-page {
         text-align: center;
-        padding: 4rem 2rem;
+        padding: 2rem 2rem;
         max-width: 800px;
         margin: 0 auto;
     }

@@ -6,7 +6,7 @@ const SearchContainer = ({ className, searchPhrase, onChange }) => {
     return (
         <div className={className}>
             <Input
-                width={'800px'}
+                width={'100%'}
                 height={'35px'}
                 border={'1px solid #ff4081'}
                 background={'transparent'}
@@ -23,6 +23,7 @@ export const Search = styled(SearchContainer)`
     justify-content: center;
     border-radius: 5px;
     font-size: 1rem;
+    width: 100%;
 
     & > input:focus {
         outline: none;

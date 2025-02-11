@@ -5,6 +5,7 @@ const LoaderContainer = ({ className, isLoading }) => {
     return (
         <div className={`${className} ${isLoading ? 'active' : ''}`}>
             <div className={`loader-spinner ${isLoading ? 'active' : ''}`}></div>
+            <h2 className="loader-text">Загрузка...</h2>
         </div>
     );
 };
@@ -23,7 +24,7 @@ export const Loader = styled(LoaderContainer)`
     }
 
     & .loader-spinner {
-        display: none;
+        display: block;
         position: absolute;
         top: calc(50% - 50px);
         left: calc(50% - 50px);
@@ -34,10 +35,18 @@ export const Loader = styled(LoaderContainer)`
         border-top: 10px solid #ff4081;
         animation: spin 1s linear infinite;
         margin: 0 auto;
+    }
 
-        &.active {
-            display: block;
-        }
+    & .loader-text {
+        position: absolute;
+        top: calc(50% - 90px);
+        left: calc(50% - 50px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-weight: 500;
+        color: #ff4081;
     }
 
     @keyframes spin {

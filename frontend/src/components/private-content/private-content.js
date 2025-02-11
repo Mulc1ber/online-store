@@ -33,6 +33,10 @@ export const PrivateContent = ({
             cartError = orderProducts && orderProducts?.length > 0 ? null : ERROR.ORDER_NOT_FOUND;
             break;
 
+        case PRIVATE_PATH.ACCOUNT:
+            accessError = checkAccess(access, userRole) ? null : ERROR.ACCESS_DENIED;
+            break;
+
         default:
             break;
     }

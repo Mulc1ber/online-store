@@ -1,15 +1,22 @@
-import { Hero, Wrapper } from '../../components';
-import { CartSection } from './components';
+import { useSelector } from 'react-redux';
+import { CartContent, EmptyCart } from './components';
+import { selectProductsInCart } from '../../selectors';
+import styled from 'styled-components';
 
-export const Cart = () => {
+const CartContainer = ({ className }) => {
+    const productsInCart = useSelector(selectProductsInCart);
+
     return (
-        <Wrapper>
-            <Hero>
-                <h1>Корзина</h1>
-                <p>Ваши выбранные товары</p>
-            </Hero>
-
-            <CartSection />
-        </Wrapper>
+        <div className={className}>
+            {productsInCart?.length > 0 ? <CartContent /> : <EmptyCart />}
+        </div>
     );
 };
+
+export const Cart = styled(CartContainer)`
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin: 2rem auto 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;

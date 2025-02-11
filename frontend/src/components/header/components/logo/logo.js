@@ -12,7 +12,4 @@ export const Logo = styled(LogoContainer)`
     font-weight: bold;
     color: #ff4081;
     transition: all 0.3s;
-    &:hover {
-        text-shadow: 0px 0px 20px rgba(255, 64, 129, 0.5);
-    }
 `;

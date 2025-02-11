@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { logout, updateCounter } from '../../../../actions';
@@ -34,26 +34,47 @@ const NavigationContainer = ({ className }) => {
 
     return (
         <nav className={className}>
-            <Link className="nav-link" to="/catalog">
+            <NavLink
+                className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}
+                to="/catalog"
+            >
                 Каталог
-            </Link>
-            <Link className="nav-link" to="/about">
+            </NavLink>
+            <NavLink
+                className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}
+                to="/about"
+            >
                 О нас
-            </Link>
-            <Link className="nav-link" to="/contact">
+            </NavLink>
+            <NavLink
+                className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}
+                to="/contact"
+            >
                 Контакты
-            </Link>
+            </NavLink>
 
-            <Link to="/cart">
-                <Icon faIcon={'fa-shopping-bag'} size={'1.2rem'} hcolor={'#ff4081'} isButton={true}>
+            <NavLink
+                to="/cart"
+                className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}
+            >
+                <Icon
+                    faIcon={'fa-shopping-bag'}
+                    size={'1.2rem'}
+                    hcolor={'#ff4081'}
+                    isButton={true}
+                    title={'Корзина'}
+                >
                     {countInCart > 0 && <span className="cart-count">{countInCart}</span>}
                 </Icon>
-            </Link>
+            </NavLink>
 
             {isAdmin && (
-                <Link className="nav-link admin" to="/products/edit">
+                <NavLink
+                    className={({ isActive }) => `${isActive ? 'active-admin' : 'inactive-admin'}`}
+                    to="/products/edit"
+                >
                     Админ
-                </Link>
+                </NavLink>
             )}
 
             <div className="user-auth">
@@ -71,15 +92,21 @@ const NavigationContainer = ({ className }) => {
                     </Link>
                 ) : (
                     <div className="user-profile">
-                        <div className="user-logo" title={login}>
-                            {login.substring(0, 1).toUpperCase()}
-                        </div>
+                        <NavLink
+                            to="/account"
+                            className={({ isActive }) =>
+                                `${isActive ? 'active-user-logo' : 'inactive-user-logo'}`
+                            }
+                        >
+                            <div title={login}>{login.substring(0, 1).toUpperCase()}</div>
+                        </NavLink>
                         <Icon
                             faIcon={'fa-sign-out'}
                             size={'1.5rem'}
                             color={'#ff4081'}
                             isButton={true}
                             onClick={() => onLogout()}
+                            title={'Выход'}
                         />
                     </div>
                 )}
@@ -93,18 +120,37 @@ export const Navigation = styled(NavigationContainer)`
     align-items: center;
     gap: 2rem;
 
-    & .nav-link {
-        transition: color 0.3s;
+    & .active-link {
+        color: #ff4081;
+        transition: 0.3s;
+    }
+    & .inactive-link {
+        transition: all 0.3s;
         &:hover {
             color: #ff4081;
+            border-bottom: 1px solid #ff4081;
         }
+    }
 
-        &.admin {
-            color: #ff4081;
-            transition: color 0.3s;
-            &:hover {
-                color: #3f51b5;
-            }
+    & .active-admin {
+        border: 1px solid #ff4081;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        color: #212121;
+        background: #ff4081;
+        box-shadow: 0px 0px 20px rgba(255, 64, 129, 0.5);
+        transition: 0.3s;
+    }
+    & .inactive-admin {
+        color: #ff4081;
+        border: 1px solid #ff4081;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        transition: 0.3s;
+        &:hover {
+            color: #212121;
+            background: #ff4081;
+            box-shadow: 0px 0px 20px rgba(255, 64, 129, 0.5);
         }
     }
 
@@ -129,15 +175,37 @@ export const Navigation = styled(NavigationContainer)`
         gap: 1rem;
     }
 
-    & .user-logo {
+    & .active-user-logo {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 36px;
         height: 36px;
+        border: 1px solid #ff4081;
         border-radius: 50%;
         font-size: 1.5rem;
-        color: white;
+        color: #212121;
         background: #ff4081;
+        box-shadow: 0px 0px 20px rgba(255, 64, 129, 0.5);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    & .inactive-user-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid #ff4081;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        color: #ff4081;
+        cursor: pointer;
+        transition: 0.3s;
+        &:hover {
+            color: #212121;
+            background: #ff4081;
+            box-shadow: 0px 0px 20px rgba(255, 64, 129, 0.5);
+        }
     }
 `;

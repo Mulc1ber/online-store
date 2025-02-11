@@ -14,7 +14,13 @@ function getOrders() {
     return Order.find().populate('user');
 }
 
+// get list for user
+function getOrdersForUser(userId) {
+    return Order.find({ user: userId }).populate('user');
+}
+
 module.exports = {
     addOrder,
     getOrders,
+    getOrdersForUser,
 };

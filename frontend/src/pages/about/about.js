@@ -1,15 +1,29 @@
-import { Hero, Wrapper } from '../../components';
-import { AboutSection } from './components';
+import { Advantages, ProductCategories } from './components';
+import styled from 'styled-components';
 
-export const About = () => {
+const AboutContainer = ({ className }) => {
     return (
-        <Wrapper>
-            <Hero>
-                <h1>О нас</h1>
-                <p>Добро пожаловать в AnimeShop - ваш надежный проводник в мир аниме!</p>
-                <p>Мы любим аниме и хотим делиться этой любовью с вами!</p>
-            </Hero>
-            <AboutSection />
-        </Wrapper>
+        <>
+            <div className={className}>
+                <h2>Почему выбирают нас</h2>
+                <Advantages />
+            </div>
+            <div className={className}>
+                <h2>Наши товары</h2>
+                <ProductCategories />
+            </div>
+        </>
     );
 };
+
+export const About = styled(AboutContainer)`
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    & > h2 {
+        text-align: center;
+    }
+`;

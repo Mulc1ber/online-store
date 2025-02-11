@@ -1,14 +1,31 @@
-import { Hero, Wrapper } from '../../components';
-import { ContactSection } from './components';
+import { AddressCard, BusinessGrid, ContactGrid } from './components';
+import styled from 'styled-components';
 
-export const Contact = () => {
+const ContactContainer = ({ className }) => {
     return (
-        <Wrapper>
-            <Hero>
-                <h1>Контакты</h1>
-                <p>Мы всегда на связи и готовы помочь вам!</p>
-            </Hero>
-            <ContactSection />
-        </Wrapper>
+        <>
+            <div className={className}>
+                <h2>Связаться с нами</h2>
+                <ContactGrid />
+            </div>
+
+            <div className={className}>
+                <h2>Для бизнеса</h2>
+                <BusinessGrid />
+            </div>
+
+            <div className={className}>
+                <h2>Наш адрес</h2>
+                <AddressCard />
+            </div>
+        </>
     );
 };
+
+export const Contact = styled(ContactContainer)`
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;

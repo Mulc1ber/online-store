@@ -1,5 +1,5 @@
 const express = require('express');
-const { addOrder, getOrders } = require('../controllers/order');
+const { addOrder, getOrders, getOrdersForUser } = require('../controllers/order');
 const mapOrder = require('../helpers/mapOrder');
 const authenticated = require('../middlewares/authenticated');
 const hasRole = require('../middlewares/hasRole');
@@ -9,10 +9,25 @@ const router = express.Router({ mergeParams: true });
 
 // authenticated
 
-router.get('/', authenticated, hasRole([ROLES.ADMIN]), async (req, res) => {
+router.get('/', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {
     const orders = await getOrders();
 
     res.send({ data: orders.map(mapOrder) });
+});
+
+router.get('/user', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {
+    try {
+        const userId = req.user.id;
+        if (!userId) {
+            return res.send({ error: 'Пользователь не найден' });
+        }
+
+        const orders = await getOrdersForUser(userId);
+
+        res.send({ data: orders.map(mapOrder) });
+    } catch (error) {
+        res.send({ error: 'Список заказов пуст' || 'Unknown error' });
+    }
 });
 
 router.post('/', authenticated, hasRole([ROLES.ADMIN, ROLES.USER]), async (req, res) => {

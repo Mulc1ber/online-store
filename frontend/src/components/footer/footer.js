@@ -7,7 +7,6 @@ const FooterContainer = ({ className }) => {
             <div className="footer-content">
                 <div>
                     <Logo />
-                    {/* <p>Мы любим аниме и хотим делиться этой любовью с вами!</p> */}
                 </div>
                 <div>
                     <h3>Контакты</h3>

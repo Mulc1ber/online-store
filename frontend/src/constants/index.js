@@ -7,3 +7,4 @@ export * from './prop-types';
 export * from './role';
 export * from './private-path';
 export * from './order-status';
+export * from './hero-description';

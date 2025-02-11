@@ -13,5 +13,5 @@ export const Input = styled(InputContainer)`
     background: ${({ background = 'white' }) => background};
     color: ${({ color = '#212121' }) => color};
     border-radius: 5px;
-    font-size: 14px;
+    font-size: ${({ size = '14px' }) => size};
 `;
