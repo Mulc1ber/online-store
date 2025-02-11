@@ -19,6 +19,7 @@ const CheckoutContainer = ({ className }) => {
         username: '',
         email: '',
     });
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [serverError, setServerError] = useState(null);
 
@@ -29,6 +30,8 @@ const CheckoutContainer = ({ className }) => {
     const match = useMatch('/checkout');
 
     const handleOrderCompleted = (totalPrice) => {
+        if (isButtonDisabled) return;
+
         if (!checkAccess([ROLE.ADMIN, ROLE.BUYER], userRole)) {
             return;
         }
@@ -49,6 +52,9 @@ const CheckoutContainer = ({ className }) => {
                     }),
                 ),
             };
+
+            setIsButtonDisabled(true);
+
             dispatch(saveOrderAsync(orderResult)).then((orderData) => {
                 if (orderData.error) {
                     setServerError(orderData.error);
@@ -82,7 +88,10 @@ const CheckoutContainer = ({ className }) => {
                             setOrderInfo={setOrderInfo}
                             errorMessage={errorMessage}
                         />
-                        <CartSummary handleOrderCompleted={handleOrderCompleted}>
+                        <CartSummary
+                            handleOrderCompleted={handleOrderCompleted}
+                            disabled={isButtonDisabled}
+                        >
                             Подтвердить заказ
                         </CartSummary>
                     </div>

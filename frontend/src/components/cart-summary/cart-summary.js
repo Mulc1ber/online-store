@@ -7,7 +7,7 @@ import { ROLE } from '../../constants';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => {
+const CartSummaryContainer = ({ className, children, handleOrderCompleted, disabled }) => {
     const productsInCart = useSelector(selectProductsInCart);
     const productsCount = useSelector(selectCounter);
     const roleId = useSelector(selectUserRole);
@@ -49,6 +49,7 @@ const CartSummaryContainer = ({ className, children, handleOrderCompleted }) => 
                             margin={'1rem 0 0'}
                             size={'1.1rem'}
                             onClick={() => handleOrderCompleted(totalPrice)}
+                            disabled={disabled}
                         >
                             {children}
                         </Button>

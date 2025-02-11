@@ -56,7 +56,7 @@ const RegistrationContainer = ({ className }) => {
     const onSubmit = ({ login, password }) => {
         dispatch(registerUserAsync(login, password))
             .then(() => {
-                console.log('Успешная регистрация');
+                console.info('Успешная регистрация');
             })
             .catch((error) => {
                 setServerError(`Ошибка запроса: ${error.message}`);

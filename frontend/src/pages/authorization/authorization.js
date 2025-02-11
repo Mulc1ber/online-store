@@ -51,7 +51,7 @@ const AuthorizationContainer = ({ className }) => {
     const onSubmit = ({ login, password }) => {
         dispatch(authorizeUserAsync(login, password))
             .then(() => {
-                console.log('Успешная авторизация');
+                console.info('Успешная авторизация');
             })
             .catch((error) => {
                 setServerError(`Ошибка запроса: ${error.message}`);
