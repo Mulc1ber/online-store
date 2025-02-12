@@ -13,15 +13,15 @@ export const productsInCartReducer = (state = initialProductsInCartState, action
             };
         case ACTION_TYPE.UPDATE_PRODUCTS_IN_CART:
             const updatedProducts = state.productsInCart.map((item) => {
-                if (item.id === action.payload.product.id) {
+                if (item.id === action.payload.id) {
                     return { ...item, quantity: item.quantity + action.payload.quantity };
                 }
                 return item;
             });
 
-            if (!updatedProducts.some((item) => item.id === action.payload.product.id)) {
+            if (!updatedProducts.some((item) => item.id === action.payload.id)) {
                 updatedProducts.push({
-                    ...action.payload.product,
+                    ...action.payload,
                     quantity: action.payload.quantity,
                 });
             }

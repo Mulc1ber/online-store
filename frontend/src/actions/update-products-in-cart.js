@@ -1,6 +1,6 @@
 import { ACTION_TYPE } from './action-type';
 
-export const updateProductsInCart = ({ product, quantity }) => ({
+export const updateProductsInCart = ({ id, name, price, imageUrl, category, quantity }) => ({
     type: ACTION_TYPE.UPDATE_PRODUCTS_IN_CART,
-    payload: { product, quantity },
+    payload: { id, name, price, imageUrl, category, quantity },
 });

@@ -6,6 +6,8 @@ export const useAddToCart = (updateProductsInCartAsync, product) => {
     const [timerId, setTimerId] = useState(null);
     const dispatch = useDispatch();
 
+    const { id, name, price, imageUrl, category } = product;
+
     useEffect(() => {
         if (timerId && !added) {
             clearTimeout(timerId);
@@ -13,7 +15,7 @@ export const useAddToCart = (updateProductsInCartAsync, product) => {
     }, [timerId, added]);
 
     const handleAddingToCart = (quantity) => {
-        dispatch(updateProductsInCartAsync({ product, quantity }));
+        dispatch(updateProductsInCartAsync({ id, name, price, imageUrl, category, quantity }));
 
         if (!added) {
             setAdded(true);
